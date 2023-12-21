@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "game/game.h"
 #include "display/display.h"
+#include "buttons/buttons.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,6 +89,7 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   display_init();
+  buttons_init();
 
   game_init(TIME_TO_MS(0, 5, 0));
   game_start();
@@ -104,11 +106,11 @@ int main(void)
 	      case NOT_STARTED:
 	    	  break;
 	      case P1:
-	    	  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET)
+	    	  if (buttons_is_p1_pressed())
 	    		  game_move(P2);
 	    	  break;
 	      case P2:
-	    	  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9) == GPIO_PIN_RESET)
+	    	  if (buttons_is_p2_pressed())
 	    		  game_move(P1);
 	    	  break;
 	      default:
