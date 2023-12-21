@@ -54,7 +54,83 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#define RS_PIN GPIO_PIN_12
+#define RW_PIN GPIO_PIN_10
+#define E_PIN GPIO_PIN_11
+#define D4_PIN GPIO_PIN_1
+#define D5_PIN GPIO_PIN_2
+#define D6_PIN GPIO_PIN_0
+#define D7_PIN GPIO_PIN_3
 
+#define LCD_PORT GPIOC
+
+static void LCD_Enable(void);
+static void LCD_Send4Bits(uint8_t data);
+
+static void delay_ms(uint32_t ms)
+{
+    HAL_Delay(ms);
+}
+
+static void LCD_Enable(void)
+{
+    HAL_GPIO_WritePin(LCD_PORT, E_PIN, GPIO_PIN_SET);
+    delay_ms(1);
+    HAL_GPIO_WritePin(LCD_PORT, E_PIN, GPIO_PIN_RESET);
+    delay_ms(1);
+}
+
+static void LCD_Send4Bits(uint8_t data)
+{
+    HAL_GPIO_WritePin(LCD_PORT, D4_PIN, (data & 0x01) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LCD_PORT, D5_PIN, (data & 0x02) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LCD_PORT, D6_PIN, (data & 0x04) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LCD_PORT, D7_PIN, (data & 0x08) ? GPIO_PIN_SET : GPIO_PIN_RESET);
+}
+
+void LCD_SendCommand(uint8_t command) {
+    HAL_GPIO_WritePin(LCD_PORT, RS_PIN, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LCD_PORT, RW_PIN, GPIO_PIN_RESET);
+
+    LCD_Send4Bits(command >> 4);
+    LCD_Enable();
+    LCD_Send4Bits(command);
+    LCD_Enable();
+
+    delay_ms(2); // Wait for the command to be executed
+}
+
+void LCD_SendData(uint8_t data) {
+    HAL_GPIO_WritePin(LCD_PORT, RS_PIN, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LCD_PORT, RW_PIN, GPIO_PIN_RESET);
+
+    LCD_Send4Bits(data >> 4);
+    LCD_Enable();
+    LCD_Send4Bits(data);
+    LCD_Enable();
+
+    delay_ms(1); // Wait for the command to be executed
+}
+
+void LCD_Init(void) {
+    delay_ms(50); // Wait for the voltage to stabilize
+
+    // Initialize the LCD
+    LCD_SendCommand(0x33); // Initialization for 4-bit mode
+    LCD_SendCommand(0x32); // Initialization for 4-bit mode
+    LCD_SendCommand(0x28); // 4-bit mode, 2 lines, 5x8 font
+    LCD_SendCommand(0x0C); // Display on, cursor and blink off
+    LCD_SendCommand(0x06); // Increment cursor position, no display shift
+    LCD_SendCommand(0x01); // Clear the display
+
+    delay_ms(2); // Wait for the LCD to stabilize
+}
+
+void LCD_PrintString(const uint8_t *str) {
+    while (*str) {
+        LCD_SendData(*str++);
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -86,13 +162,17 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  LCD_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
+		LCD_PrintString("Hello World");
+
+		HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -122,9 +202,9 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 16;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 100;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -140,7 +220,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -164,13 +244,28 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : B1_Pin */
-  GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  /*Configure GPIO pins : PC13 PC5 PC6 PC8
+                           PC9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_8
+                          |GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PC0 PC1 PC2 PC3
+                           PC10 PC11 PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : USART_TX_Pin USART_RX_Pin */
   GPIO_InitStruct.Pin = USART_TX_Pin|USART_RX_Pin;
@@ -186,6 +281,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB8 PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
