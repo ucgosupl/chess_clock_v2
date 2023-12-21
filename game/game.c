@@ -3,12 +3,18 @@
 static volatile ms_t time_p1;
 static volatile ms_t time_p2;
 
+static ms_t inc_p1;
+static ms_t inc_p2;
+
 static enum state game_state = NOT_STARTED;
 
-void game_init(ms_t time)
+void game_init(ms_t time, ms_t inc)
 {
-	time_p1 = time;
-	time_p2 = time;
+	time_p1 = time + inc;
+	time_p2 = time + inc;
+
+	inc_p1 = inc;
+	inc_p2 = inc;
 
 	game_state = NOT_STARTED;
 }
@@ -20,6 +26,16 @@ void game_start(void)
 
 void game_move(enum state player)
 {
+	if (player == P2 && time_p1 > 0)
+	{
+		time_p1 += inc_p1;
+	}
+
+	if (player == P1 && time_p2 > 0)
+	{
+		time_p2 += inc_p2;
+	}
+
 	game_state = player;
 }
 
