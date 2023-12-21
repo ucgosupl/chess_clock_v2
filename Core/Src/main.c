@@ -132,19 +132,19 @@ void LCD_PrintString(const uint8_t *str) {
     }
 }
 
-static void ms_to_string(uint32_t ms, uint8_t *buf)
+static void ms_to_string(ms_t ms, uint8_t *buf)
 {
-	uint32_t h = ms / (60 * 60 * 1000);
+	ms_t h = ms / (60 * 60 * 1000);
 	buf[0] = h + '0';
 	ms %= (60 * 60 * 1000);
 
-	uint32_t m = ms / (60 * 1000);
+	ms_t m = ms / (60 * 1000);
 	buf[1] = ':';
 	buf[2] = m / 10 + '0';
 	buf[3] = m % 10 + '0';
 	ms %= 60 * 1000;
 
-	uint32_t s = ms / 1000;
+	ms_t s = ms / 1000;
 	buf[4] = '.';
 	buf[5] = s / 10 + '0';
 	buf[6] = s % 10 + '0';
@@ -182,7 +182,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   LCD_Init();
 
-  game_init(5 * 60 * 1000);
+  game_init(TIME_TO_MS(0, 5, 0));
   game_start();
   /* USER CODE END 2 */
 

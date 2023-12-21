@@ -1,11 +1,11 @@
 #include "game.h"
 
-static volatile uint32_t time_p1;
-static volatile uint32_t time_p2;
+static volatile ms_t time_p1;
+static volatile ms_t time_p2;
 
 static enum state game_state = NOT_STARTED;
 
-void game_init(uint32_t time)
+void game_init(ms_t time)
 {
 	time_p1 = time;
 	time_p2 = time;
@@ -37,12 +37,12 @@ void game_time_update(void)
 	else {}
 }
 
-uint32_t game_p1_time_get(void)
+ms_t game_p1_time_get(void)
 {
 	return time_p1;
 }
 
-uint32_t game_p2_time_get(void)
+ms_t game_p2_time_get(void)
 {
 	return time_p2;
 }
