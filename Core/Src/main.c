@@ -22,7 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "game/game.h"
-#include "hd44780/hd44780.h"
+#include "display/display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,23 +56,6 @@ static void MX_GPIO_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-static void ms_to_string(ms_t ms, uint8_t *buf)
-{
-	ms_t h = ms / (60 * 60 * 1000);
-	buf[0] = h + '0';
-	ms %= (60 * 60 * 1000);
-
-	ms_t m = ms / (60 * 1000);
-	buf[1] = ':';
-	buf[2] = m / 10 + '0';
-	buf[3] = m % 10 + '0';
-	ms %= 60 * 1000;
-
-	ms_t s = ms / 1000;
-	buf[4] = '.';
-	buf[5] = s / 10 + '0';
-	buf[6] = s % 10 + '0';
-}
 /* USER CODE END 0 */
 
 /**
@@ -104,7 +87,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  LCD_Init();
+  display_init();
 
   game_init(TIME_TO_MS(0, 5, 0));
   game_start();
@@ -114,13 +97,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		uint8_t lcd_buf[16 + 1] = "                ";
-		//h:mm.ss  h:mm:ss
-		ms_to_string(game_p1_time_get(), lcd_buf);
-		ms_to_string(game_p2_time_get(), lcd_buf + 9);
-
-		LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-		LCD_PrintString(lcd_buf);
+	  display_show_time(game_p1_time_get(), game_p2_time_get());
 
 	      switch(game_state_get())
 	      {
