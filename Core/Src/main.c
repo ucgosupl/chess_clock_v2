@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "game/game.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -131,6 +131,24 @@ void LCD_PrintString(const uint8_t *str) {
         LCD_SendData(*str++);
     }
 }
+
+static void ms_to_string(uint32_t ms, uint8_t *buf)
+{
+	uint32_t h = ms / (60 * 60 * 1000);
+	buf[0] = h + '0';
+	ms %= (60 * 60 * 1000);
+
+	uint32_t m = ms / (60 * 1000);
+	buf[1] = ':';
+	buf[2] = m / 10 + '0';
+	buf[3] = m % 10 + '0';
+	ms %= 60 * 1000;
+
+	uint32_t s = ms / 1000;
+	buf[4] = '.';
+	buf[5] = s / 10 + '0';
+	buf[6] = s % 10 + '0';
+}
 /* USER CODE END 0 */
 
 /**
@@ -163,16 +181,40 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   LCD_Init();
+
+  game_init(5 * 60 * 1000);
+  game_start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-		LCD_PrintString("Hello World");
+		uint8_t lcd_buf[16 + 1] = "                ";
+		//h:mm.ss  h:mm:ss
+		ms_to_string(game_p1_time_get(), lcd_buf);
+		ms_to_string(game_p2_time_get(), lcd_buf + 9);
 
-		HAL_Delay(1000);
+		LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
+		LCD_PrintString(lcd_buf);
+
+	      switch(game_state_get())
+	      {
+	      case NOT_STARTED:
+	    	  break;
+	      case P1:
+	    	  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET)
+	    		  game_move(P2);
+	    	  break;
+	      case P2:
+	    	  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9) == GPIO_PIN_RESET)
+	    		  game_move(P1);
+	    	  break;
+	      default:
+	    	  break;
+	      }
+
+		HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
