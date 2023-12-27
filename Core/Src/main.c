@@ -91,7 +91,9 @@ int main(void)
   display_init();
   buttons_init();
 
-  game_init(TIME_TO_MS(0, 5, 0), S2MS(3));
+  //game_init(TIME_TO_MS(0, 5, 0), S2MS(3));
+
+  game_init(fixed_init(TIME_TO_MS(0, 5, 0)));
   game_start();
   /* USER CODE END 2 */
 
