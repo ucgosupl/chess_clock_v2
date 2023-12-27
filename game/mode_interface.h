@@ -5,6 +5,8 @@
 
 enum state {NOT_STARTED, P1, P2};
 
+typedef uint32_t moves_t;
+
 typedef void (*on_start)(void);
 typedef void (*on_time_update)(enum state game_state);
 typedef void (*on_move)(enum state player);

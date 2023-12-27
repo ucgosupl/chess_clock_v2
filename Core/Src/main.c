@@ -93,7 +93,7 @@ int main(void)
 
   //game_init(TIME_TO_MS(0, 5, 0), S2MS(3));
 
-  game_init(bonus_init(TIME_TO_MS(0, 5, 0), S2MS(3)));
+  game_init(fixed_control_init(TIME_TO_MS(0, 5, 0), 5, TIME_TO_MS(0, 5, 0)));
   game_start();
   /* USER CODE END 2 */
 
