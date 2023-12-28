@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include "display/display.h"
+#include "game/game.h"
 
 static enum config_state state;
 
@@ -9,7 +10,22 @@ static struct config_time p2_time;
 static struct config_time p1_inc;
 static struct config_time p2_inc;
 
-void bonus_on_plus(void)
+static config_completed_cb completed_cb = NULL;
+
+static void bonus_on_entry(config_completed_cb cb)
+{
+	completed_cb = cb;
+}
+
+static void bonus_on_exit(void)
+{
+	game_init(bonus_init(TIME_TO_MS(
+			p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2),
+			TIME_TO_MS(
+					0, p1_inc.m1*10 + p1_inc.m2, p1_inc.s1*10 + p1_inc.s2)));
+}
+
+static void bonus_on_plus(void)
 {
 	switch (state)
 	{
@@ -70,7 +86,7 @@ void bonus_on_plus(void)
 	}
 }
 
-void bonus_on_minus(void)
+static void bonus_on_minus(void)
 {
 	switch (state)
 	{
@@ -131,19 +147,15 @@ void bonus_on_minus(void)
 	}
 }
 
-void bonus_on_left(void)
+static void bonus_on_left(void)
 {
-	if (CONFIG_DONE == state)
-	{
-		state = P2_INC_SEC2;
-	}
-	else if (0 < state)
+	if (0 < state)
 	{
 		state--;
 	}
 }
 
-void bonus_on_right(void)
+static void bonus_on_right(void)
 {
 	if (P2_INC_SEC2 > state)
 	{
@@ -152,10 +164,14 @@ void bonus_on_right(void)
 	else
 	{
 		state = CONFIG_DONE;
+		if (NULL != completed_cb)
+		{
+			completed_cb();
+		}
 	}
 }
 
-void bonus_display(void)
+static void bonus_display(void)
 {
 	if (state < P1_INC_MIN)
 	{
@@ -165,4 +181,19 @@ void bonus_display(void)
 	{
 		display_show_config_inc(&p1_inc, &p2_inc, state);
 	}
+}
+static const struct config_interface config_bonus =
+{
+		bonus_on_entry,
+		bonus_on_exit,
+		bonus_on_plus,
+		bonus_on_minus,
+		bonus_on_left,
+		bonus_on_right,
+		bonus_display,
+};
+
+const struct config_interface * config_bonus_get(void)
+{
+	return &config_bonus;
 }

@@ -15,7 +15,20 @@ void config_on_entry(enum mode mode)
 {
 	state = 1;
 
-	config = config_fixed_get();
+	switch (mode)
+	{
+	case FIXED_CUSTOM:
+		config = config_fixed_get();
+		break;
+
+	case BONUS_CUSTOM:
+		config = config_bonus_get();
+		break;
+
+	default:
+		break;
+	}
+
 
 	config->on_entry(completed_cb);
 }

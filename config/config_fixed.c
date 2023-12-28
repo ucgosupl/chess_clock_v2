@@ -104,11 +104,7 @@ static void fixed_on_minus(void)
 
 static void fixed_on_left(void)
 {
-	if (CONFIG_DONE == state)
-	{
-		state = P2_SEC2;
-	}
-	else if (0 < state)
+	if (0 < state)
 	{
 		state--;
 	}
