@@ -24,6 +24,7 @@
 #include "game/game.h"
 #include "display/display.h"
 #include "buttons/buttons.h"
+#include "modes/modes.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,49 +62,15 @@ enum clock_state {MODE, CONFIG, GAME};
 static enum clock_state state = MODE;
 
 static uint32_t mode;
-#define MODE_MAX 4
-
-typedef void (*game_init_for_mode)(void *);
-
-static void init_for_mode1(void *params);
-static void init_for_mode2(void *params);
-static void init_for_mode3(void *params);
-static void init_for_mode4(void *params);
-
-static game_init_for_mode modes_game_init[MODE_MAX] =
-{
-		init_for_mode1,
-		init_for_mode2,
-		init_for_mode3,
-		init_for_mode4,
-};
-
-static void init_for_mode1(void *params)
-{
-	game_init(fixed_init(TIME_TO_MS(0, 5, 0)));
-}
-
-static void init_for_mode2(void *params)
-{
-	game_init(bonus_init(TIME_TO_MS(0, 5, 0), S2MS(3)));
-}
-
-static void init_for_mode3(void *params)
-{
-	game_init(fixed_control_init(TIME_TO_MS(0, 5, 0), 5, TIME_TO_MS(0, 5, 0)));
-}
-
-static void init_for_mode4(void *params)
-{
-	game_init(bonus_control_init(TIME_TO_MS(0, 5, 0), S2MS(3), 5, TIME_TO_MS(0, 5, 0)));
-}
 
 void mode_on_tick(void)
 {
+	display_show_mode(mode);
+
 	//debouncing - assume 100ms iteration is enough
 	if (buttons_is_plus_pressed())
 	{
-		if (mode < MODE_MAX)
+		if (mode < MODES_MAX)
 		{
 			mode++;
 		}
@@ -117,14 +84,14 @@ void mode_on_tick(void)
 	}
 	else if (buttons_is_play_pressed())
 	{
+		modes_game_init(mode);
+		game_start();
 		state = GAME;
 	}
 	else
 	{
 
 	}
-
-	display_show_mode(mode);
 }
 
 void config_on_tick(void)
@@ -189,8 +156,8 @@ int main(void)
 
   //game_init(TIME_TO_MS(0, 5, 0), S2MS(3));
 
-  game_init(bonus_control_init(TIME_TO_MS(0, 5, 0), S2MS(3), 5, TIME_TO_MS(0, 5, 0)));
-  game_start();
+  //game_init(bonus_control_init(TIME_TO_MS(0, 5, 0), S2MS(3), 5, TIME_TO_MS(0, 5, 0)));
+  //game_start();
   /* USER CODE END 2 */
 
   /* Infinite loop */

@@ -1,4 +1,4 @@
-#include "mode_interface.h"
+#include "game/mode_interface.h"
 
 struct bonus_data
 {

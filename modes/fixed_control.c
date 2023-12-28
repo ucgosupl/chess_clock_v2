@@ -1,12 +1,9 @@
-#include "mode_interface.h"
+#include "game/mode_interface.h"
 
-struct bonus_control_data
+struct fixed_control_data
 {
 	ms_t time_p1;
 	ms_t time_p2;
-
-	ms_t inc_p1;
-	ms_t inc_p2;
 
 	moves_t moves_p1;
 	moves_t moves_p2;
@@ -15,15 +12,15 @@ struct bonus_control_data
 	ms_t bonus;
 };
 
-static struct bonus_control_data data;
+static struct fixed_control_data data;
 
 
-static void bonus_control_on_start(void)
+static void fixed_control_on_start(void)
 {
 	//do nothing
 }
 
-static void bonus_control_on_time_update(enum state game_state)
+static void fixed_control_on_time_update(enum state game_state)
 {
 	if (game_state == P1 && data.time_p1 > 0)
 		data.time_p1--;
@@ -32,11 +29,10 @@ static void bonus_control_on_time_update(enum state game_state)
 	else {}
 }
 
-static void bonus_control_on_move(enum state player)
+static void fixed_control_on_move(enum state player)
 {
 	if (player == P2 && data.time_p1 > 0)
 	{
-		data.time_p1 += data.inc_p1;
 		data.moves_p1++;
 		if (data.moves_p1 == data.control_on_move)
 		{
@@ -46,7 +42,6 @@ static void bonus_control_on_move(enum state player)
 
 	if (player == P1 && data.time_p2 > 0)
 	{
-		data.time_p2 += data.inc_p2;
 		data.moves_p2++;
 		if (data.moves_p2 == data.control_on_move)
 		{
@@ -55,7 +50,7 @@ static void bonus_control_on_move(enum state player)
 	}
 }
 
-static ms_t bonus_control_time_get(enum state player)
+static ms_t fixed_control_time_get(enum state player)
 {
 	switch (player)
 	{
@@ -68,21 +63,18 @@ static ms_t bonus_control_time_get(enum state player)
 	}
 }
 
-static const struct mode_interface bonus_control_mode =
+static const struct mode_interface fixed_control_mode =
 {
-		bonus_control_on_start,
-		bonus_control_on_time_update,
-		bonus_control_on_move,
-		bonus_control_time_get,
+		fixed_control_on_start,
+		fixed_control_on_time_update,
+		fixed_control_on_move,
+		fixed_control_time_get,
 };
 
-const struct mode_interface * bonus_control_init(ms_t time, ms_t inc, moves_t moves, ms_t bonus)
+const struct mode_interface * fixed_control_init(ms_t time, moves_t moves, ms_t bonus)
 {
-	data.time_p1 = time + inc;
-	data.time_p2 = time + inc;
-
-	data.inc_p1 = inc;
-	data.inc_p2 = inc;
+	data.time_p1 = time;
+	data.time_p2 = time;
 
 	data.moves_p1 = 0;
 	data.moves_p2 = 0;
@@ -90,5 +82,5 @@ const struct mode_interface * bonus_control_init(ms_t time, ms_t inc, moves_t mo
 	data.control_on_move = moves;
 	data.bonus = bonus;
 
-	return &bonus_control_mode;
+	return &fixed_control_mode;
 }
