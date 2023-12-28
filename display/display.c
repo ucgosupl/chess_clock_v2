@@ -143,3 +143,24 @@ void display_show_config_inc(ms_t config_inc_p1, ms_t config_inc_p2, uint32_t st
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
 	LCD_PrintString(lcd_buf);
 }
+
+void display_show_config_moves(uint32_t moves, uint32_t state)
+{
+	memcpy(lcd_buf, "MOVES:          ", 16);
+
+	lcd_buf[7] = '0' + moves/10;
+	lcd_buf[8] = '0' + moves%10;
+
+	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
+	LCD_PrintString(lcd_buf);
+}
+
+void display_show_config_bonus(ms_t bonus, uint32_t state)
+{
+	memcpy(lcd_buf, "BONUS: ", 7);
+
+	ms_to_string(bonus, lcd_buf + 7);
+
+	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
+	LCD_PrintString(lcd_buf);
+}
