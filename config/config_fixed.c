@@ -2,7 +2,7 @@
 
 #include "display/display.h"
 
-enum config_state state;
+static enum config_state state;
 
 static struct config_time p1_time;
 static struct config_time p2_time;
@@ -103,7 +103,7 @@ void fixed_on_left(void)
 
 void fixed_on_right(void)
 {
-	if (P1_INC_MIN > state)
+	if (P2_SEC2 > state)
 	{
 		state++;
 	}
