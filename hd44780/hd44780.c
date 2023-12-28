@@ -72,6 +72,13 @@ void LCD_Init(void) {
     delay_ms(2); // Wait for the LCD to stabilize
 }
 
+void LCD_Clear(void)
+{
+    LCD_SendCommand(0x01); // Clear the display
+
+    delay_ms(2); // Wait for the LCD to stabilize
+}
+
 void LCD_PrintString(const uint8_t *str) {
     while (*str) {
         LCD_SendData(*str++);

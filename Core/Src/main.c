@@ -57,6 +57,102 @@ static void MX_GPIO_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+enum clock_state {MODE, CONFIG, GAME};
+static enum clock_state state = MODE;
+
+static uint32_t mode;
+#define MODE_MAX 4
+
+typedef void (*game_init_for_mode)(void *);
+
+static void init_for_mode1(void *params);
+static void init_for_mode2(void *params);
+static void init_for_mode3(void *params);
+static void init_for_mode4(void *params);
+
+static game_init_for_mode modes_game_init[MODE_MAX] =
+{
+		init_for_mode1,
+		init_for_mode2,
+		init_for_mode3,
+		init_for_mode4,
+};
+
+static void init_for_mode1(void *params)
+{
+	game_init(fixed_init(TIME_TO_MS(0, 5, 0)));
+}
+
+static void init_for_mode2(void *params)
+{
+	game_init(bonus_init(TIME_TO_MS(0, 5, 0), S2MS(3)));
+}
+
+static void init_for_mode3(void *params)
+{
+	game_init(fixed_control_init(TIME_TO_MS(0, 5, 0), 5, TIME_TO_MS(0, 5, 0)));
+}
+
+static void init_for_mode4(void *params)
+{
+	game_init(bonus_control_init(TIME_TO_MS(0, 5, 0), S2MS(3), 5, TIME_TO_MS(0, 5, 0)));
+}
+
+void mode_on_tick(void)
+{
+	//debouncing - assume 100ms iteration is enough
+	if (buttons_is_plus_pressed())
+	{
+		if (mode < MODE_MAX)
+		{
+			mode++;
+		}
+	}
+	else if (buttons_is_minus_pressed())
+	{
+		if (mode > 0)
+		{
+			mode--;
+		}
+	}
+	else if (buttons_is_play_pressed())
+	{
+		state = GAME;
+	}
+	else
+	{
+
+	}
+
+	display_show_mode(mode);
+}
+
+void config_on_tick(void)
+{
+
+}
+
+void game_on_tick(void)
+{
+	  display_show_time(game_p1_time_get(), game_p2_time_get());
+
+	      switch(game_state_get())
+	      {
+	      case NOT_STARTED:
+	    	  break;
+	      case P1:
+	    	  if (buttons_is_p1_pressed())
+	    		  game_move(P2);
+	    	  break;
+	      case P2:
+	    	  if (buttons_is_p2_pressed())
+	    		  game_move(P1);
+	    	  break;
+	      default:
+	    	  break;
+	      }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -101,25 +197,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  display_show_time(game_p1_time_get(), game_p2_time_get());
+	  switch (state)
+	  {
+	  case MODE:
+		  mode_on_tick();
+		  break;
+	  case CONFIG:
+		  config_on_tick();
+		  break;
+	  case GAME:
+		  game_on_tick();
+		  break;
+	  default:
+		  break;
+	  }
 
-	      switch(game_state_get())
-	      {
-	      case NOT_STARTED:
-	    	  break;
-	      case P1:
-	    	  if (buttons_is_p1_pressed())
-	    		  game_move(P2);
-	    	  break;
-	      case P2:
-	    	  if (buttons_is_p2_pressed())
-	    		  game_move(P1);
-	    	  break;
-	      default:
-	    	  break;
-	      }
 
-		HAL_Delay(100);
+	  HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
