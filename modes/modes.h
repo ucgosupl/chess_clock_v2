@@ -3,8 +3,32 @@
 
 #include <stdint.h>
 
-#define MODES_MAX 4
+enum mode
+{
+	FIXED_CUSTOM,
+	BONUS_CUSTOM,
+	BONUSC_CUSTOM,
 
-void modes_game_init(uint32_t mode);
+	FIXED_1M,
+	FIXED_5M,
+	FIXED_15M,
+	FIXED_30M,
+	FIXED_1H,
+	FIXED_1H_30M,
+
+	BONUS_1M_1S,
+	BONUS_3M_2S,
+	BOUNS_5M_3S,
+	BONUS_10M_5S,
+	BONUS_15M_10S,
+	BONUS_1H30M_30S,
+
+	BONUSC_1H30M_30S_40MOV_30M,
+	BONUSC_1H30M_0S_30MOV_1H,
+
+	MODES_MAX,
+};
+
+//void modes_game_init(uint32_t mode);
 
 #endif /* MODES_H_ */

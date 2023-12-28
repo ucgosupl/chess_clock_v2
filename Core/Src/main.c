@@ -61,7 +61,7 @@ static void MX_GPIO_Init(void);
 
 enum clock_state {MODE, CONFIG, GAME};
 
-static uint32_t mode;
+static enum mode mode;
 
 uint32_t mode_on_tick(void)
 {

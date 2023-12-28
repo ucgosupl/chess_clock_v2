@@ -4,6 +4,8 @@
 #include "stm32f4xx.h"
 #include <stdint.h>
 
+#include "modes/modes.h"
+
 enum config_state
 {
 	P1_HOURS,
@@ -51,6 +53,25 @@ struct config_time
 
 typedef void (*config_completed_cb)(void);
 
+typedef void (*on_entry)(config_completed_cb cb);
+typedef void (*on_exit)(void);
+typedef void (*on_plus)(void);
+typedef void (*on_minus)(void);
+typedef void (*on_left)(void);
+typedef void (*on_right)(void);
+typedef void (*display)(void);
+
+struct config_interface
+{
+	on_entry on_entry;
+	on_exit on_exit;
+	on_plus on_plus;
+	on_minus on_minus;
+	on_left on_left;
+	on_right on_right;
+	display display;
+};
+
 __STATIC_FORCEINLINE uint8_t add_with_bounds(uint8_t val)
 {
 	return (val >= 9) ? 9 : ++val;
@@ -61,7 +82,7 @@ __STATIC_FORCEINLINE uint8_t sub_with_bounds(uint8_t val)
 	return (val == 0) ? 0 : --val;
 }
 
-void config_on_entry(uint32_t mode);
+void config_on_entry(enum mode mode);
 uint32_t config_on_tick(void);
 void config_on_exit(void);
 

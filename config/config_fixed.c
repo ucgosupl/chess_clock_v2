@@ -10,17 +10,17 @@ static struct config_time p2_time;
 
 static config_completed_cb completed_cb = NULL;
 
-void config_fixed_on_entry(config_completed_cb cb)
+static void fixed_on_entry(config_completed_cb cb)
 {
 	completed_cb = cb;
 }
 
-void config_fixed_on_exit(void)
+static void fixed_on_exit(void)
 {
 	game_init(fixed_init(TIME_TO_MS(p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2)));
 }
 
-void fixed_on_plus(void)
+static void fixed_on_plus(void)
 {
 	switch (state)
 	{
@@ -61,7 +61,7 @@ void fixed_on_plus(void)
 	}
 }
 
-void fixed_on_minus(void)
+static void fixed_on_minus(void)
 {
 	switch (state)
 	{
@@ -102,7 +102,7 @@ void fixed_on_minus(void)
 	}
 }
 
-void fixed_on_left(void)
+static void fixed_on_left(void)
 {
 	if (CONFIG_DONE == state)
 	{
@@ -114,7 +114,7 @@ void fixed_on_left(void)
 	}
 }
 
-void fixed_on_right(void)
+static void fixed_on_right(void)
 {
 	if (P2_SEC2 > state)
 	{
@@ -130,9 +130,23 @@ void fixed_on_right(void)
 	}
 }
 
-void fixed_display(void)
+static void fixed_display(void)
 {
 	display_show_config_time(&p1_time, &p2_time, state);
 }
 
+static const struct config_interface config_fixed =
+{
+		fixed_on_entry,
+		fixed_on_exit,
+		fixed_on_plus,
+		fixed_on_minus,
+		fixed_on_left,
+		fixed_on_right,
+		fixed_display,
+};
 
+const struct config_interface * config_fixed_get(void)
+{
+	return &config_fixed;
+}
