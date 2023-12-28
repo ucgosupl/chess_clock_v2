@@ -114,3 +114,32 @@ void display_show_config_time(ms_t p1, ms_t p2, uint32_t state)
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
 	LCD_PrintString(lcd_buf);
 }
+
+void display_show_config_inc(ms_t config_inc_p1, ms_t config_inc_p2, uint32_t state)
+{
+	memcpy(lcd_buf, "INC:  ", 6);
+
+	ms_t m = MS2MIN(config_inc_p1);
+	lcd_buf[6] = m % 10 + '0';
+	config_inc_p1 %= MS_IN_MIN;
+
+	ms_t s = config_inc_p1 / MS_IN_S;
+	lcd_buf[7] = '.';
+	lcd_buf[8] = s / 10 + '0';
+	lcd_buf[9] = s % 10 + '0';
+
+	lcd_buf[10] = ' ';
+	lcd_buf[11] = ' ';
+
+	m = MS2MIN(config_inc_p2);
+	lcd_buf[12] = m % 10 + '0';
+	config_inc_p2 %= MS_IN_MIN;
+
+	s = config_inc_p2 / MS_IN_S;
+	lcd_buf[13] = '.';
+	lcd_buf[14] = s / 10 + '0';
+	lcd_buf[15] = s % 10 + '0';
+
+	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
+	LCD_PrintString(lcd_buf);
+}
