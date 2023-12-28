@@ -129,5 +129,5 @@ void config_on_tick(void)
 
 	}
 
-	display_show_time(config_time_p1, config_time_p2);
+	display_show_config_time(config_time_p1, config_time_p2, config_state);
 }
