@@ -49,6 +49,8 @@ struct config_time
 	uint8_t s2;
 };
 
+typedef void (*config_completed_cb)(void);
+
 __STATIC_FORCEINLINE uint8_t add_with_bounds(uint8_t val)
 {
 	return (val >= 9) ? 9 : ++val;
@@ -59,6 +61,8 @@ __STATIC_FORCEINLINE uint8_t sub_with_bounds(uint8_t val)
 	return (val == 0) ? 0 : --val;
 }
 
-void config_on_tick(void);
+void config_on_entry(uint32_t mode);
+uint32_t config_on_tick(void);
+void config_on_exit(void);
 
 #endif /* CONFIG_H */

@@ -60,11 +60,10 @@ static void MX_GPIO_Init(void);
 /* USER CODE BEGIN 0 */
 
 enum clock_state {MODE, CONFIG, GAME};
-static enum clock_state state = MODE;
 
 static uint32_t mode;
 
-void mode_on_tick(void)
+uint32_t mode_on_tick(void)
 {
 	display_show_mode(mode);
 
@@ -85,21 +84,15 @@ void mode_on_tick(void)
 	}
 	else if (buttons_is_play_pressed())
 	{
-		//modes_game_init(mode);
-		//game_start();
-		//state = GAME;
-		state = CONFIG;
+		return CONFIG;
 	}
 	else
 	{
 
 	}
-}
 
-//void config_on_tick(void)
-//{
-//
-//}
+	return MODE;
+}
 
 void game_on_tick(void)
 {
@@ -156,30 +149,50 @@ int main(void)
   display_init();
   buttons_init();
 
-  //game_init(TIME_TO_MS(0, 5, 0), S2MS(3));
-
-  //game_init(bonus_control_init(TIME_TO_MS(0, 5, 0), S2MS(3), 5, TIME_TO_MS(0, 5, 0)));
-  //game_start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  enum clock_state last_state;
+  enum clock_state new_state;
+  enum clock_state state = MODE;
+
   while (1)
   {
 	  switch (state)
 	  {
 	  case MODE:
-		  mode_on_tick();
+		  new_state = mode_on_tick();
 		  break;
+
 	  case CONFIG:
-		  config_on_tick();
+		  if (CONFIG != last_state)
+		  {
+			  config_on_entry(mode);
+		  }
+
+		  new_state = config_on_tick();
+
+		  if (CONFIG != new_state)
+		  {
+			  config_on_exit();
+		  }
 		  break;
+
 	  case GAME:
+		  if (GAME != last_state)
+		  {
+			  game_start();
+		  }
+
 		  game_on_tick();
 		  break;
+
 	  default:
 		  break;
 	  }
+	  last_state = state;
+	  state = new_state;
 
 
 	  HAL_Delay(100);

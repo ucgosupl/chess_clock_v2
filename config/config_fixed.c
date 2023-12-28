@@ -1,11 +1,24 @@
 #include "config.h"
 
 #include "display/display.h"
+#include "game/game.h"
 
 static enum config_state state;
 
 static struct config_time p1_time;
 static struct config_time p2_time;
+
+static config_completed_cb completed_cb = NULL;
+
+void config_fixed_on_entry(config_completed_cb cb)
+{
+	completed_cb = cb;
+}
+
+void config_fixed_on_exit(void)
+{
+	game_init(fixed_init(TIME_TO_MS(p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2)));
+}
 
 void fixed_on_plus(void)
 {
@@ -110,6 +123,10 @@ void fixed_on_right(void)
 	else
 	{
 		state = CONFIG_DONE;
+		if (NULL != completed_cb)
+		{
+			completed_cb();
+		}
 	}
 }
 
@@ -117,4 +134,5 @@ void fixed_display(void)
 {
 	display_show_config_time(&p1_time, &p2_time, state);
 }
+
 
