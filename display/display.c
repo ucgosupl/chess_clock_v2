@@ -23,6 +23,25 @@ static void ms_to_string(ms_t ms, uint8_t *buf)
 	buf[6] = s % 10 + '0';
 }
 
+static void config_time_to_str(struct config_time *c, uint8_t *buf)
+{
+	buf[0] = '0' + c->h;
+	buf[1] = ':';
+	buf[2] = '0' + c->m1;
+	buf[3] = '0' + c->m2;
+	buf[4] = '.';
+	buf[5] = '0' + c->s1;
+	buf[6] = '0' + c->s2;
+}
+
+static void config_inc_to_str(struct config_time *c, uint8_t *buf)
+{
+	buf[0] = '0' + c->m2;
+	buf[1] = '.';
+	buf[2] = '0' + c->s1;
+	buf[3] = '0' + c->s2;
+}
+
 void display_init(void)
 {
 	LCD_Init();
@@ -54,14 +73,17 @@ void display_show_time(ms_t p1, ms_t p2)
 	LCD_PrintString(lcd_buf);
 }
 
-void display_show_config_time(ms_t p1, ms_t p2, uint32_t state)
+
+
+
+void display_show_config_time(struct config_time *p1, struct config_time *p2, uint32_t state)
 {
 	static uint32_t cnt = 0;
 
 	memcpy(lcd_buf, "                ", 16);
-	//h:mm.ss  h:mm:ss
-	ms_to_string(p1, lcd_buf);
-	ms_to_string(p2, lcd_buf + 9);
+
+	config_time_to_str(p1, lcd_buf);
+	config_time_to_str(p2, lcd_buf + 9);
 
 	cnt++;
 	if (cnt < 4)
@@ -115,30 +137,12 @@ void display_show_config_time(ms_t p1, ms_t p2, uint32_t state)
 	LCD_PrintString(lcd_buf);
 }
 
-void display_show_config_inc(ms_t config_inc_p1, ms_t config_inc_p2, uint32_t state)
+void display_show_config_inc(struct config_time *p1, struct config_time *p2, uint32_t state)
 {
-	memcpy(lcd_buf, "INC:  ", 6);
+	memcpy(lcd_buf, "INC:            ", 16);
 
-	ms_t m = MS2MIN(config_inc_p1);
-	lcd_buf[6] = m % 10 + '0';
-	config_inc_p1 %= MS_IN_MIN;
-
-	ms_t s = config_inc_p1 / MS_IN_S;
-	lcd_buf[7] = '.';
-	lcd_buf[8] = s / 10 + '0';
-	lcd_buf[9] = s % 10 + '0';
-
-	lcd_buf[10] = ' ';
-	lcd_buf[11] = ' ';
-
-	m = MS2MIN(config_inc_p2);
-	lcd_buf[12] = m % 10 + '0';
-	config_inc_p2 %= MS_IN_MIN;
-
-	s = config_inc_p2 / MS_IN_S;
-	lcd_buf[13] = '.';
-	lcd_buf[14] = s / 10 + '0';
-	lcd_buf[15] = s % 10 + '0';
+	config_inc_to_str(p1, lcd_buf + 6);
+	config_inc_to_str(p2, lcd_buf + 12);
 
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
 	LCD_PrintString(lcd_buf);
@@ -148,18 +152,18 @@ void display_show_config_moves(uint32_t moves, uint32_t state)
 {
 	memcpy(lcd_buf, "MOVES:          ", 16);
 
-	lcd_buf[7] = '0' + moves/10;
-	lcd_buf[8] = '0' + moves%10;
+	lcd_buf[7] = '0' + moves / 10;
+	lcd_buf[8] = '0' + moves % 10;
 
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
 	LCD_PrintString(lcd_buf);
 }
 
-void display_show_config_bonus(ms_t bonus, uint32_t state)
+void display_show_config_bonus(struct config_time *bonus, uint32_t state)
 {
-	memcpy(lcd_buf, "BONUS: ", 7);
+	memcpy(lcd_buf, "BONUS:          ", 16);
 
-	ms_to_string(bonus, lcd_buf + 7);
+	config_time_to_str(bonus, lcd_buf + 7);
 
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
 	LCD_PrintString(lcd_buf);

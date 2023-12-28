@@ -3,54 +3,15 @@
 #include "display/display.h"
 #include "buttons/buttons.h"
 
-enum config_state
-{
-	P1_HOURS,
-	P1_MIN1,
-	P1_MIN2,
-	P1_SEC1,
-	P1_SEC2,
-
-	P2_HOURS,
-	P2_MIN1,
-	P2_MIN2,
-	P2_SEC1,
-	P2_SEC2,
-
-	P1_INC_MIN,
-	P1_INC_SEC1,
-	P1_INC_SEC2,
-
-	P2_INC_MIN,
-	P2_INC_SEC1,
-	P2_INC_SEC2,
-
-	MOVES1,
-	MOVES2,
-
-	BONUS_HOURS,
-	BONUS_MIN1,
-	BONUS_MIN2,
-	BONUS_SEC1,
-	BONUS_SEC2,
-
-	CONFIG_DONE,
-};
-
 enum config_state config_state = P1_HOURS;
 
-ms_t config_time_p1 = 0;
-ms_t config_time_p2 = 0;
+static struct config_time p1_time;
+static struct config_time p2_time;
+static struct config_time p1_inc;
+static struct config_time p2_inc;
+static struct config_time bonus;
 
-ms_t config_inc_p1 = 0;
-ms_t config_inc_p2 = 0;
-
-ms_t config_bonus = 0;
-
-uint32_t moves = 0;
-
-static void fixed_on_plus(enum config_state state);
-static void fixed_on_minus(enum config_state state);
+static uint32_t moves = 0;
 
 static void bonus_on_plus(enum config_state state);
 static void bonus_on_minus(enum config_state state);
@@ -58,81 +19,60 @@ static void bonus_on_minus(enum config_state state);
 static void bonus_control_on_plus(enum config_state state);
 static void bonus_control_on_minus(enum config_state state);
 
-static void fixed_on_plus(enum config_state state)
-{
-	switch (config_state)
-			{
-			case P1_HOURS:
-				config_time_p1 += TIME_TO_MS(1, 0, 0);
-				break;
-			case P1_MIN1:
-				config_time_p1 += TIME_TO_MS(0, 10, 0);
-				break;
-			case P1_MIN2:
-				config_time_p1 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P1_SEC1:
-				config_time_p1 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P1_SEC2:
-				config_time_p1 += TIME_TO_MS(0, 0, 1);
-				break;
-
-			case P2_HOURS:
-				config_time_p2 += TIME_TO_MS(1, 0, 0);
-				break;
-			case P2_MIN1:
-				config_time_p2 += TIME_TO_MS(0, 10, 0);
-				break;
-			case P2_MIN2:
-				config_time_p2 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P2_SEC1:
-				config_time_p2 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P2_SEC2:
-				config_time_p2 += TIME_TO_MS(0, 0, 1);
-				break;
-
-			default:
-				break;
-			}
-}
-
-static void fixed_on_minus(enum config_state state)
+static void bonus_on_plus(enum config_state state)
 {
 	switch (config_state)
 	{
 	case P1_HOURS:
-		config_time_p1 -= TIME_TO_MS(1, 0, 0);
+		p1_time.h = add_with_bounds(p1_time.h);
 		break;
 	case P1_MIN1:
-		config_time_p1 -= TIME_TO_MS(0, 10, 0);
+		p1_time.m1 = add_with_bounds(p1_time.m1);
 		break;
 	case P1_MIN2:
-		config_time_p1 -= TIME_TO_MS(0, 1, 0);
+		p1_time.m2 = add_with_bounds(p1_time.m2);
 		break;
 	case P1_SEC1:
-		config_time_p1 -= TIME_TO_MS(0, 0, 10);
+		p1_time.s1 = add_with_bounds(p1_time.s1);
 		break;
 	case P1_SEC2:
-		config_time_p1 -= TIME_TO_MS(0, 0, 1);
+		p1_time.s2 = add_with_bounds(p1_time.s2);
 		break;
 
 	case P2_HOURS:
-		config_time_p2 -= TIME_TO_MS(1, 0, 0);
+		p2_time.h = add_with_bounds(p2_time.h);
 		break;
 	case P2_MIN1:
-		config_time_p2 -= TIME_TO_MS(0, 10, 0);
+		p2_time.m1 = add_with_bounds(p2_time.m1);
 		break;
 	case P2_MIN2:
-		config_time_p2 -= TIME_TO_MS(0, 1, 0);
+		p2_time.m2 = add_with_bounds(p2_time.m2);
 		break;
 	case P2_SEC1:
-		config_time_p2 -= TIME_TO_MS(0, 0, 10);
+		p2_time.s1 = add_with_bounds(p2_time.s1);
 		break;
 	case P2_SEC2:
-		config_time_p2 -= TIME_TO_MS(0, 0, 1);
+		p2_time.s2 = add_with_bounds(p2_time.s2);
+		break;
+
+	case P1_INC_MIN:
+		p1_inc.m2 = add_with_bounds(p1_inc.m2);
+		break;
+	case P1_INC_SEC1:
+		p1_inc.s1 = add_with_bounds(p1_inc.s1);
+		break;
+	case P1_INC_SEC2:
+		p1_inc.s2 = add_with_bounds(p1_inc.s2);
+		break;
+
+	case P2_INC_MIN:
+		p2_inc.m2 = add_with_bounds(p2_inc.m2);
+		break;
+	case P2_INC_SEC1:
+		p2_inc.s1 = add_with_bounds(p2_inc.s1);
+		break;
+	case P2_INC_SEC2:
+		p2_inc.s2 = add_with_bounds(p2_inc.s2);
 		break;
 
 	default:
@@ -140,121 +80,60 @@ static void fixed_on_minus(enum config_state state)
 	}
 }
 
-static void bonus_on_plus(enum config_state state)
-{
-	switch (config_state)
-			{
-			case P1_HOURS:
-				config_time_p1 += TIME_TO_MS(1, 0, 0);
-				break;
-			case P1_MIN1:
-				config_time_p1 += TIME_TO_MS(0, 10, 0);
-				break;
-			case P1_MIN2:
-				config_time_p1 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P1_SEC1:
-				config_time_p1 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P1_SEC2:
-				config_time_p1 += TIME_TO_MS(0, 0, 1);
-				break;
-
-			case P2_HOURS:
-				config_time_p2 += TIME_TO_MS(1, 0, 0);
-				break;
-			case P2_MIN1:
-				config_time_p2 += TIME_TO_MS(0, 10, 0);
-				break;
-			case P2_MIN2:
-				config_time_p2 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P2_SEC1:
-				config_time_p2 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P2_SEC2:
-				config_time_p2 += TIME_TO_MS(0, 0, 1);
-				break;
-
-			case P1_INC_MIN:
-				config_inc_p1 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P1_INC_SEC1:
-				config_inc_p1 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P1_INC_SEC2:
-				config_inc_p1 += TIME_TO_MS(0, 0, 1);
-				break;
-
-			case P2_INC_MIN:
-				config_inc_p2 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P2_INC_SEC1:
-				config_inc_p2 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P2_INC_SEC2:
-				config_inc_p2 += TIME_TO_MS(0, 0, 1);
-				break;
-
-			default:
-				break;
-			}
-}
-
 static void bonus_on_minus(enum config_state state)
 {
 	switch (config_state)
 	{
 	case P1_HOURS:
-		config_time_p1 -= TIME_TO_MS(1, 0, 0);
+		p1_time.h = sub_with_bounds(p1_time.h);
 		break;
 	case P1_MIN1:
-		config_time_p1 -= TIME_TO_MS(0, 10, 0);
+		p1_time.m1 = sub_with_bounds(p1_time.m1);
 		break;
 	case P1_MIN2:
-		config_time_p1 -= TIME_TO_MS(0, 1, 0);
+		p1_time.m2 = sub_with_bounds(p1_time.m2);
 		break;
 	case P1_SEC1:
-		config_time_p1 -= TIME_TO_MS(0, 0, 10);
+		p1_time.s1 = sub_with_bounds(p1_time.s1);
 		break;
 	case P1_SEC2:
-		config_time_p1 -= TIME_TO_MS(0, 0, 1);
+		p1_time.s2 = sub_with_bounds(p1_time.s2);
 		break;
 
 	case P2_HOURS:
-		config_time_p2 -= TIME_TO_MS(1, 0, 0);
+		p2_time.h = sub_with_bounds(p2_time.h);
 		break;
 	case P2_MIN1:
-		config_time_p2 -= TIME_TO_MS(0, 10, 0);
+		p2_time.m1 = sub_with_bounds(p2_time.m1);
 		break;
 	case P2_MIN2:
-		config_time_p2 -= TIME_TO_MS(0, 1, 0);
+		p2_time.m2 = sub_with_bounds(p2_time.m2);
 		break;
 	case P2_SEC1:
-		config_time_p2 -= TIME_TO_MS(0, 0, 10);
+		p2_time.s1 = sub_with_bounds(p2_time.s1);
 		break;
 	case P2_SEC2:
-		config_time_p2 -= TIME_TO_MS(0, 0, 1);
+		p2_time.s2 = sub_with_bounds(p2_time.s2);
 		break;
 
 	case P1_INC_MIN:
-		config_inc_p1 -= TIME_TO_MS(0, 1, 0);
+		p1_inc.m2 = sub_with_bounds(p1_inc.m2);
 		break;
 	case P1_INC_SEC1:
-		config_inc_p1 -= TIME_TO_MS(0, 0, 10);
+		p1_inc.s1 = sub_with_bounds(p1_inc.s1);
 		break;
 	case P1_INC_SEC2:
-		config_inc_p1 -= TIME_TO_MS(0, 0, 1);
+		p1_inc.s2 = sub_with_bounds(p1_inc.s2);
 		break;
 
 	case P2_INC_MIN:
-		config_inc_p2 -= TIME_TO_MS(0, 1, 0);
+		p2_inc.m2 = sub_with_bounds(p2_inc.m2);
 		break;
 	case P2_INC_SEC1:
-		config_inc_p2 -= TIME_TO_MS(0, 0, 10);
+		p2_inc.s1 = sub_with_bounds(p2_inc.s1);
 		break;
 	case P2_INC_SEC2:
-		config_inc_p2 -= TIME_TO_MS(0, 0, 1);
+		p2_inc.s2 = sub_with_bounds(p2_inc.s2);
 		break;
 
 	default:
@@ -265,85 +144,85 @@ static void bonus_on_minus(enum config_state state)
 static void bonus_control_on_plus(enum config_state state)
 {
 	switch (config_state)
-			{
-			case P1_HOURS:
-				config_time_p1 += TIME_TO_MS(1, 0, 0);
-				break;
-			case P1_MIN1:
-				config_time_p1 += TIME_TO_MS(0, 10, 0);
-				break;
-			case P1_MIN2:
-				config_time_p1 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P1_SEC1:
-				config_time_p1 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P1_SEC2:
-				config_time_p1 += TIME_TO_MS(0, 0, 1);
-				break;
+	{
+	case P1_HOURS:
+		p1_time.h = add_with_bounds(p1_time.h);
+		break;
+	case P1_MIN1:
+		p1_time.m1 = add_with_bounds(p1_time.m1);
+		break;
+	case P1_MIN2:
+		p1_time.m2 = add_with_bounds(p1_time.m2);
+		break;
+	case P1_SEC1:
+		p1_time.s1 = add_with_bounds(p1_time.s1);
+		break;
+	case P1_SEC2:
+		p1_time.s2 = add_with_bounds(p1_time.s2);
+		break;
 
-			case P2_HOURS:
-				config_time_p2 += TIME_TO_MS(1, 0, 0);
-				break;
-			case P2_MIN1:
-				config_time_p2 += TIME_TO_MS(0, 10, 0);
-				break;
-			case P2_MIN2:
-				config_time_p2 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P2_SEC1:
-				config_time_p2 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P2_SEC2:
-				config_time_p2 += TIME_TO_MS(0, 0, 1);
-				break;
+	case P2_HOURS:
+		p2_time.h = add_with_bounds(p2_time.h);
+		break;
+	case P2_MIN1:
+		p2_time.m1 = add_with_bounds(p2_time.m1);
+		break;
+	case P2_MIN2:
+		p2_time.m2 = add_with_bounds(p2_time.m2);
+		break;
+	case P2_SEC1:
+		p2_time.s1 = add_with_bounds(p2_time.s1);
+		break;
+	case P2_SEC2:
+		p2_time.s2 = add_with_bounds(p2_time.s2);
+		break;
 
-			case P1_INC_MIN:
-				config_inc_p1 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P1_INC_SEC1:
-				config_inc_p1 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P1_INC_SEC2:
-				config_inc_p1 += TIME_TO_MS(0, 0, 1);
-				break;
+	case P1_INC_MIN:
+		p1_inc.m2 = add_with_bounds(p1_inc.m2);
+		break;
+	case P1_INC_SEC1:
+		p1_inc.s1 = add_with_bounds(p1_inc.s1);
+		break;
+	case P1_INC_SEC2:
+		p1_inc.s2 = add_with_bounds(p1_inc.s2);
+		break;
 
-			case P2_INC_MIN:
-				config_inc_p2 += TIME_TO_MS(0, 1, 0);
-				break;
-			case P2_INC_SEC1:
-				config_inc_p2 += TIME_TO_MS(0, 0, 10);
-				break;
-			case P2_INC_SEC2:
-				config_inc_p2 += TIME_TO_MS(0, 0, 1);
-				break;
+	case P2_INC_MIN:
+		p2_inc.m2 = add_with_bounds(p2_inc.m2);
+		break;
+	case P2_INC_SEC1:
+		p2_inc.s1 = add_with_bounds(p2_inc.s1);
+		break;
+	case P2_INC_SEC2:
+		p2_inc.s2 = add_with_bounds(p2_inc.s2);
+		break;
 
-			case MOVES1:
-				moves += 10;
-				break;
-			case MOVES2:
-				moves += 1;
-				break;
+	case MOVES1:
+		moves += 10;
+		break;
+	case MOVES2:
+		moves += 1;
+		break;
 
-			case BONUS_HOURS:
-				config_bonus += TIME_TO_MS(1, 0, 0);
-				break;
-			case BONUS_MIN1:
-				config_bonus += TIME_TO_MS(0, 10, 0);
-				break;
-			case BONUS_MIN2:
-				config_bonus += TIME_TO_MS(0, 1, 0);
-				break;
-			case BONUS_SEC1:
-				config_bonus += TIME_TO_MS(0, 0, 10);
-				break;
-			case BONUS_SEC2:
-				config_bonus += TIME_TO_MS(0, 0, 1);
-				break;
+	case BONUS_HOURS:
+		bonus.h = add_with_bounds(bonus.h);
+		break;
+	case BONUS_MIN1:
+		bonus.m1 = add_with_bounds(bonus.m1);
+		break;
+	case BONUS_MIN2:
+		bonus.m2 = add_with_bounds(bonus.m2);
+		break;
+	case BONUS_SEC1:
+		bonus.s1 = add_with_bounds(bonus.s1);
+		break;
+	case BONUS_SEC2:
+		bonus.s2 = add_with_bounds(bonus.s2);
+		break;
 
-			default:
-				break;
-			}
+	default:
+		break;
+	}
 }
 
 static void bonus_control_on_minus(enum config_state state)
@@ -351,55 +230,55 @@ static void bonus_control_on_minus(enum config_state state)
 	switch (config_state)
 	{
 	case P1_HOURS:
-		config_time_p1 -= TIME_TO_MS(1, 0, 0);
+		p1_time.h = sub_with_bounds(p1_time.h);
 		break;
 	case P1_MIN1:
-		config_time_p1 -= TIME_TO_MS(0, 10, 0);
+		p1_time.m1 = sub_with_bounds(p1_time.m1);
 		break;
 	case P1_MIN2:
-		config_time_p1 -= TIME_TO_MS(0, 1, 0);
+		p1_time.m2 = sub_with_bounds(p1_time.m2);
 		break;
 	case P1_SEC1:
-		config_time_p1 -= TIME_TO_MS(0, 0, 10);
+		p1_time.s1 = sub_with_bounds(p1_time.s1);
 		break;
 	case P1_SEC2:
-		config_time_p1 -= TIME_TO_MS(0, 0, 1);
+		p1_time.s2 = sub_with_bounds(p1_time.s2);
 		break;
 
 	case P2_HOURS:
-		config_time_p2 -= TIME_TO_MS(1, 0, 0);
+		p2_time.h = sub_with_bounds(p2_time.h);
 		break;
 	case P2_MIN1:
-		config_time_p2 -= TIME_TO_MS(0, 10, 0);
+		p2_time.m1 = sub_with_bounds(p2_time.m1);
 		break;
 	case P2_MIN2:
-		config_time_p2 -= TIME_TO_MS(0, 1, 0);
+		p2_time.m2 = sub_with_bounds(p2_time.m2);
 		break;
 	case P2_SEC1:
-		config_time_p2 -= TIME_TO_MS(0, 0, 10);
+		p2_time.s1 = sub_with_bounds(p2_time.s1);
 		break;
 	case P2_SEC2:
-		config_time_p2 -= TIME_TO_MS(0, 0, 1);
+		p2_time.s2 = sub_with_bounds(p2_time.s2);
 		break;
 
 	case P1_INC_MIN:
-		config_inc_p1 -= TIME_TO_MS(0, 1, 0);
+		p1_inc.m2 = sub_with_bounds(p1_inc.m2);
 		break;
 	case P1_INC_SEC1:
-		config_inc_p1 -= TIME_TO_MS(0, 0, 10);
+		p1_inc.s1 = sub_with_bounds(p1_inc.s1);
 		break;
 	case P1_INC_SEC2:
-		config_inc_p1 -= TIME_TO_MS(0, 0, 1);
+		p1_inc.s2 = sub_with_bounds(p1_inc.s2);
 		break;
 
 	case P2_INC_MIN:
-		config_inc_p2 -= TIME_TO_MS(0, 1, 0);
+		p2_inc.m2 = sub_with_bounds(p2_inc.m2);
 		break;
 	case P2_INC_SEC1:
-		config_inc_p2 -= TIME_TO_MS(0, 0, 10);
+		p2_inc.s1 = sub_with_bounds(p2_inc.s1);
 		break;
 	case P2_INC_SEC2:
-		config_inc_p2 -= TIME_TO_MS(0, 0, 1);
+		p2_inc.s2 = sub_with_bounds(p2_inc.s2);
 		break;
 
 	case MOVES1:
@@ -410,19 +289,19 @@ static void bonus_control_on_minus(enum config_state state)
 		break;
 
 	case BONUS_HOURS:
-		config_bonus -= TIME_TO_MS(1, 0, 0);
+		bonus.h = sub_with_bounds(bonus.h);
 		break;
 	case BONUS_MIN1:
-		config_bonus -= TIME_TO_MS(0, 10, 0);
+		bonus.m1 = sub_with_bounds(bonus.m1);
 		break;
 	case BONUS_MIN2:
-		config_bonus -= TIME_TO_MS(0, 1, 0);
+		bonus.m2 = sub_with_bounds(bonus.m2);
 		break;
 	case BONUS_SEC1:
-		config_bonus -= TIME_TO_MS(0, 0, 10);
+		bonus.s1 = sub_with_bounds(bonus.s1);
 		break;
 	case BONUS_SEC2:
-		config_bonus -= TIME_TO_MS(0, 0, 1);
+		bonus.s2 = sub_with_bounds(bonus.s2);
 		break;
 
 	default:
@@ -434,25 +313,27 @@ void config_on_tick(void)
 {
 	if (buttons_is_plus_pressed())
 	{
-		bonus_control_on_plus(config_state);
+		fixed_on_plus();
 	}
 	else if (buttons_is_minus_pressed())
 	{
-		bonus_control_on_minus(config_state);
+		fixed_on_minus();
 	}
 	else if (buttons_is_left_pressed())
 	{
-		if (P1_HOURS < config_state)
-		{
-			config_state--;
-		}
+		fixed_on_left();
+//		if (P1_HOURS < config_state)
+//		{
+//			config_state--;
+//		}
 	}
 	else if (buttons_is_right_pressed())
 	{
-		if (CONFIG_DONE > config_state)
-		{
-			config_state++;
-		}
+		fixed_on_right();
+//		if (CONFIG_DONE > config_state)
+//		{
+//			config_state++;
+//		}
 	}
 	else if (buttons_is_play_pressed())
 	{
@@ -463,24 +344,26 @@ void config_on_tick(void)
 
 	}
 
-	if (config_state < P1_INC_MIN)
-	{
-		display_show_config_time(config_time_p1, config_time_p2, config_state);
-	}
-	else if (config_state < MOVES1)
-	{
-		display_show_config_inc(config_inc_p1, config_inc_p2, config_state);
-	}
-	else if (config_state < BONUS_HOURS)
-	{
-		display_show_config_moves(moves, config_state);
-	}
-	else if (config_state < CONFIG_DONE)
-	{
-		display_show_config_bonus(config_bonus, config_state);
-	}
-	else
-	{
+	fixed_display();
 
-	}
+//	if (config_state < P1_INC_MIN)
+//	{
+//		display_show_config_time(&p1_time, &p2_time, config_state);
+//	}
+//	else if (config_state < MOVES1)
+//	{
+//		display_show_config_inc(&p1_inc, &p2_inc, config_state);
+//	}
+//	else if (config_state < BONUS_HOURS)
+//	{
+//		display_show_config_moves(moves, config_state);
+//	}
+//	else if (config_state < CONFIG_DONE)
+//	{
+//		display_show_config_bonus(&bonus, config_state);
+//	}
+//	else
+//	{
+//
+//	}
 }
