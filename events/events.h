@@ -14,4 +14,6 @@
 
 typedef uint32_t events_t;
 
+events_t events_update(void);
+
 #endif /* EVENTS_H_ */

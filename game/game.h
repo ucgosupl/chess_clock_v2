@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-#include "events.h"
+#include "events/events.h"
 #include "mode_interface.h"
 
 void game_init(const struct mode_interface *mode);

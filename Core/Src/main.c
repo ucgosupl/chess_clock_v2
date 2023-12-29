@@ -27,7 +27,7 @@
 #include "modes/modes.h"
 #include "config/config.h"
 
-#include "events.h"
+#include "events/events.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -140,33 +140,8 @@ int main(void)
 
   while (1)
   {
-		uint32_t events = 0;
-		if (buttons_is_plus_pressed())
-		{
-			EVENT_SET(events, EVENT_BUTTON_PLUS);
-		}
-		else if (buttons_is_minus_pressed())
-		{
-			EVENT_SET(events, EVENT_BUTTON_MINUS);
-		}
-		else if (buttons_is_left_pressed())
-		{
-			EVENT_SET(events, EVENT_BUTTON_LEFT);
-		}
-		else if (buttons_is_right_pressed())
-		{
-			EVENT_SET(events, EVENT_BUTTON_RIGHT);
-		}
-		else if (buttons_is_play_pressed())
-		{
-			EVENT_SET(events, EVENT_BUTTON_PLAY);
-		}
-		else
-		{
-
-		}
-
-		turn_update();
+	  events_t events = events_update();
+	  turn_update();
 
 	  switch (state)
 	  {
