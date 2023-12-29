@@ -2,7 +2,6 @@
 #define MODE_H_
 
 #include <stdint.h>
-#include "events/events.h"
 
 enum mode
 {
@@ -29,10 +28,5 @@ enum mode
 
 	MODES_MAX,
 };
-
-void mode_on_entry(void);
-uint32_t mode_on_tick(events_t events);
-void mode_on_exit(void);
-enum mode mode_get(void);
 
 #endif /* MODE_H_ */

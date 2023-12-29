@@ -1,8 +1,8 @@
-#include "mode/mode.h"
+#include "state_mode.h"
 
 #include <stdlib.h>
 
-#include "game/game.h"
+#include "display/display.h"
 
 static enum mode mode;
 
