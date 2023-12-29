@@ -26,6 +26,8 @@
 #include "buttons/buttons.h"
 #include "modes/modes.h"
 #include "config/config.h"
+
+#include "events.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,26 +65,26 @@ enum clock_state {MODE, CONFIG, GAME};
 
 static enum mode mode;
 
-uint32_t mode_on_tick(void)
+uint32_t mode_on_tick(events_t events)
 {
 	display_show_mode(mode);
 
 	//debouncing - assume 100ms iteration is enough
-	if (buttons_is_plus_pressed())
+	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
 		if (mode < MODES_MAX)
 		{
 			mode++;
 		}
 	}
-	else if (buttons_is_minus_pressed())
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_MINUS))
 	{
 		if (mode > 0)
 		{
 			mode--;
 		}
 	}
-	else if (buttons_is_play_pressed())
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
 	{
 		return CONFIG;
 	}
@@ -93,8 +95,6 @@ uint32_t mode_on_tick(void)
 
 	return MODE;
 }
-
-
 
 /* USER CODE END 0 */
 
@@ -140,10 +140,38 @@ int main(void)
 
   while (1)
   {
+		uint32_t events = 0;
+		if (buttons_is_plus_pressed())
+		{
+			EVENT_SET(events, EVENT_BUTTON_PLUS);
+		}
+		else if (buttons_is_minus_pressed())
+		{
+			EVENT_SET(events, EVENT_BUTTON_MINUS);
+		}
+		else if (buttons_is_left_pressed())
+		{
+			EVENT_SET(events, EVENT_BUTTON_LEFT);
+		}
+		else if (buttons_is_right_pressed())
+		{
+			EVENT_SET(events, EVENT_BUTTON_RIGHT);
+		}
+		else if (buttons_is_play_pressed())
+		{
+			EVENT_SET(events, EVENT_BUTTON_PLAY);
+		}
+		else
+		{
+
+		}
+
+		turn_update();
+
 	  switch (state)
 	  {
 	  case MODE:
-		  new_state = mode_on_tick();
+		  new_state = mode_on_tick(events);
 		  break;
 
 	  case CONFIG:
@@ -152,7 +180,7 @@ int main(void)
 			  config_on_entry(mode);
 		  }
 
-		  new_state = config_on_tick();
+		  new_state = config_on_tick(events);
 
 		  if (CONFIG != new_state)
 		  {
@@ -163,10 +191,10 @@ int main(void)
 	  case GAME:
 		  if (GAME != last_state)
 		  {
-			  game_start();
+
 		  }
 
-		  game_on_tick();
+		  game_on_tick(events);
 		  break;
 
 	  default:

@@ -1,7 +1,5 @@
 #include "config.h"
 
-#include "buttons/buttons.h"
-
 static uint32_t state;
 
 const struct config_interface *config;
@@ -27,8 +25,10 @@ void config_on_entry(enum mode mode)
 
 	case BONUSC_CUSTOM:
 		config = config_bonus_control_get();
+		break;
 
 	default:
+		config = config_fixed_get();
 		break;
 	}
 
@@ -36,25 +36,25 @@ void config_on_entry(enum mode mode)
 	config->on_entry(completed_cb);
 }
 
-uint32_t config_on_tick(void)
+uint32_t config_on_tick(events_t events)
 {
-	if (buttons_is_plus_pressed())
+	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
 		config->on_plus();
 	}
-	else if (buttons_is_minus_pressed())
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_MINUS))
 	{
 		config->on_minus();
 	}
-	else if (buttons_is_left_pressed())
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_LEFT))
 	{
 		config->on_left();
 	}
-	else if (buttons_is_right_pressed())
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_RIGHT))
 	{
 		config->on_right();
 	}
-	else if (buttons_is_play_pressed())
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
 	{
 
 	}

@@ -23,18 +23,18 @@ static void bonus_control_on_start(void)
 	//do nothing
 }
 
-static void bonus_control_on_time_update(enum state game_state)
+static void bonus_control_on_time_update(enum turn whose_turn)
 {
-	if (game_state == P1 && data.time_p1 > 0)
+	if ((whose_turn == PLAYER1) && (data.time_p1 > 0))
 		data.time_p1--;
-	else if (game_state == P2 && data.time_p2 > 0)
+	else if ((whose_turn == PLAYER2) && (data.time_p2 > 0))
 		data.time_p2--;
 	else {}
 }
 
-static void bonus_control_on_move(enum state player)
+static void bonus_control_on_move(enum turn who_moved)
 {
-	if (player == P2 && data.time_p1 > 0)
+	if ((who_moved == PLAYER1) && (data.time_p1 > 0))
 	{
 		data.time_p1 += data.inc_p1;
 		data.moves_p1++;
@@ -44,7 +44,7 @@ static void bonus_control_on_move(enum state player)
 		}
 	}
 
-	if (player == P1 && data.time_p2 > 0)
+	if ((who_moved == PLAYER2) && (data.time_p2 > 0))
 	{
 		data.time_p2 += data.inc_p2;
 		data.moves_p2++;
@@ -59,9 +59,9 @@ static ms_t bonus_control_time_get(enum state player)
 {
 	switch (player)
 	{
-	case P1:
+	case PLAYER1:
 		return data.time_p1;
-	case P2:
+	case PLAYER2:
 		return data.time_p2;
 	default:
 		return 0;

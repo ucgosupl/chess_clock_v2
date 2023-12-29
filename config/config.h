@@ -4,6 +4,7 @@
 #include "stm32f4xx.h"
 #include <stdint.h>
 
+#include "events.h"
 #include "modes/modes.h"
 
 enum config_state
@@ -83,7 +84,7 @@ __STATIC_FORCEINLINE uint8_t sub_with_bounds(uint8_t val)
 }
 
 void config_on_entry(enum mode mode);
-uint32_t config_on_tick(void);
+uint32_t config_on_tick(events_t events);
 void config_on_exit(void);
 
 #endif /* CONFIG_H */
