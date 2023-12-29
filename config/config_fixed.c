@@ -1,5 +1,7 @@
 #include "config.h"
 
+#include <stdlib.h>
+
 #include "display/display.h"
 #include "game/game.h"
 

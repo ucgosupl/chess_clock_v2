@@ -1,11 +1,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <mode/mode.h>
-#include "stm32f4xx.h"
 #include <stdint.h>
 
-#include "events/events.h"
+#include "stm32f4xx.h"
 
 enum config_state
 {
@@ -83,8 +81,6 @@ __STATIC_FORCEINLINE uint8_t sub_with_bounds(uint8_t val)
 	return (val == 0) ? 0 : --val;
 }
 
-void config_on_entry(enum mode mode);
-uint32_t config_on_tick(events_t events);
-void config_on_exit(void);
+
 
 #endif /* CONFIG_H */

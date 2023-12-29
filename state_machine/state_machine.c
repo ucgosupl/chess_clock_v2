@@ -1,7 +1,7 @@
 #include "state_machine.h"
 
 #include "state_mode/state_mode.h"
-#include "config/config.h"
+#include "state_config/state_config.h"
 #include "game/game.h"
 
 enum clock_state {MODE, CONFIG, GAME};

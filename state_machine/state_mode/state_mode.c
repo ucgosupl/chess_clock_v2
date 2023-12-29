@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "mode/mode.h"
 #include "display/display.h"
 
 static enum mode mode;

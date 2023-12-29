@@ -1,4 +1,6 @@
-#include "config.h"
+#include "state_config.h"
+
+#include "config/config.h"
 
 static uint32_t state;
 
