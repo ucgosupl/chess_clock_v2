@@ -1,4 +1,4 @@
-#include "game/mode_interface.h"
+#include "mode_interface.h"
 
 struct bonus_data
 {
@@ -60,13 +60,16 @@ static const struct mode_interface bonus_mode =
 		bonus_time_get,
 };
 
-const struct mode_interface * bonus_init(ms_t time, ms_t inc)
+void bonus_init(ms_t time, ms_t inc)
 {
 	data.time_p1 = time + inc;
 	data.time_p2 = time + inc;
 
 	data.inc_p1 = inc;
 	data.inc_p2 = inc;
+}
 
-	return &bonus_mode;
+const struct mode_interface * bonus_interface_get(void)
+{
+
 }

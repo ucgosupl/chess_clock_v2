@@ -21,7 +21,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "game/game.h"
 #include "buttons/buttons.h"
 #include "events/events.h"
 #include "state_machine/state_machine.h"

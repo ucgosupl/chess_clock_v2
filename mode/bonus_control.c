@@ -1,4 +1,4 @@
-#include "game/mode_interface.h"
+#include "mode_interface.h"
 
 struct bonus_control_data
 {
@@ -55,7 +55,7 @@ static void bonus_control_on_move(enum turn who_moved)
 	}
 }
 
-static ms_t bonus_control_time_get(enum state player)
+static ms_t bonus_control_time_get(enum turn player)
 {
 	switch (player)
 	{
@@ -76,7 +76,7 @@ static const struct mode_interface bonus_control_mode =
 		bonus_control_time_get,
 };
 
-const struct mode_interface * bonus_control_init(ms_t time, ms_t inc, moves_t moves, ms_t bonus)
+ void bonus_control_init(ms_t time, ms_t inc, moves_t moves, ms_t bonus)
 {
 	data.time_p1 = time + inc;
 	data.time_p2 = time + inc;
@@ -89,6 +89,9 @@ const struct mode_interface * bonus_control_init(ms_t time, ms_t inc, moves_t mo
 
 	data.control_on_move = moves;
 	data.bonus = bonus;
+}
 
+const struct mode_interface * bonus_control_interface_get(void)
+{
 	return &bonus_control_mode;
 }

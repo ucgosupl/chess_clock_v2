@@ -1,4 +1,4 @@
-#include "game/mode_interface.h"
+#include "mode_interface.h"
 
 struct fixed_control_data
 {
@@ -71,7 +71,7 @@ static const struct mode_interface fixed_control_mode =
 		fixed_control_time_get,
 };
 
-const struct mode_interface * fixed_control_init(ms_t time, moves_t moves, ms_t bonus)
+void fixed_control_init(ms_t time, moves_t moves, ms_t bonus)
 {
 	data.time_p1 = time;
 	data.time_p2 = time;
@@ -82,5 +82,10 @@ const struct mode_interface * fixed_control_init(ms_t time, moves_t moves, ms_t 
 	data.control_on_move = moves;
 	data.bonus = bonus;
 
+	return &fixed_control_mode;
+}
+
+const struct mode_interface * fixed_control_interface_get(void)
+{
 	return &fixed_control_mode;
 }

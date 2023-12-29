@@ -14,7 +14,6 @@ void mode_on_entry(void)
 
 uint32_t mode_on_tick(events_t events)
 {
-	//debouncing - assume 100ms iteration is enough
 	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
 		if (mode < MODES_MAX)

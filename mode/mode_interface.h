@@ -5,8 +5,6 @@
 
 #include "turn/turn.h"
 
-enum state {NOT_STARTED, STARTED, PAUSED};
-
 typedef uint32_t moves_t;
 
 typedef void (*on_start)(void);

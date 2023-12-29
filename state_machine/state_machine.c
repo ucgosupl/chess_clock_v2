@@ -1,8 +1,8 @@
+#include <state_machine/state_game/state_game.h>
 #include "state_machine.h"
 
 #include "state_mode/state_mode.h"
 #include "state_config/state_config.h"
-#include "game/game.h"
 
 enum clock_state {MODE, CONFIG, GAME};
 
@@ -23,6 +23,11 @@ void state_machine_tick(events_t events)
 	{
 	case MODE:
 		new_state = mode_on_tick(events);
+
+		if (MODE != new_state)
+		{
+			mode_on_exit();
+		}
 		break;
 
 	case CONFIG:
@@ -42,10 +47,15 @@ void state_machine_tick(events_t events)
 	case GAME:
 		if (GAME != last_state)
 		{
-
+			game_on_entry();
 		}
 
 		game_on_tick(events);
+
+		if (GAME != new_state)
+		{
+			game_on_exit();
+		}
 		break;
 
 	default:

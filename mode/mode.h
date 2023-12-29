@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "mode_interface.h"
+
 enum mode
 {
 	FIXED_CUSTOM,
@@ -28,5 +30,8 @@ enum mode
 
 	MODES_MAX,
 };
+
+const struct mode_interface * mode_interface_get(void);
+void mode_interface_set(const struct mode_interface *i);
 
 #endif /* MODE_H_ */
