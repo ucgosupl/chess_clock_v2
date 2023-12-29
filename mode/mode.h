@@ -1,7 +1,8 @@
-#ifndef MODES_H_
-#define MODES_H_
+#ifndef MODE_H_
+#define MODE_H_
 
 #include <stdint.h>
+#include "events/events.h"
 
 enum mode
 {
@@ -29,6 +30,9 @@ enum mode
 	MODES_MAX,
 };
 
-//void modes_game_init(uint32_t mode);
+void mode_on_entry(void);
+uint32_t mode_on_tick(events_t events);
+void mode_on_exit(void);
+enum mode mode_get(void);
 
-#endif /* MODES_H_ */
+#endif /* MODE_H_ */

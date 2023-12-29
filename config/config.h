@@ -1,11 +1,11 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <mode/mode.h>
 #include "stm32f4xx.h"
 #include <stdint.h>
 
 #include "events/events.h"
-#include "modes/modes.h"
 
 enum config_state
 {

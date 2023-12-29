@@ -22,12 +22,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "game/game.h"
-#include "display/display.h"
 #include "buttons/buttons.h"
-#include "modes/modes.h"
-#include "config/config.h"
-
 #include "events/events.h"
+#include "state_machine/state_machine.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,41 +57,6 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-enum clock_state {MODE, CONFIG, GAME};
-
-static enum mode mode;
-
-uint32_t mode_on_tick(events_t events)
-{
-	display_show_mode(mode);
-
-	//debouncing - assume 100ms iteration is enough
-	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
-	{
-		if (mode < MODES_MAX)
-		{
-			mode++;
-		}
-	}
-	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_MINUS))
-	{
-		if (mode > 0)
-		{
-			mode--;
-		}
-	}
-	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
-	{
-		return CONFIG;
-	}
-	else
-	{
-
-	}
-
-	return MODE;
-}
 
 /* USER CODE END 0 */
 
@@ -129,55 +91,18 @@ int main(void)
   /* USER CODE BEGIN 2 */
   display_init();
   buttons_init();
-
+  state_machine_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  enum clock_state last_state;
-  enum clock_state new_state;
-  enum clock_state state = MODE;
+
 
   while (1)
   {
 	  events_t events = events_update();
 	  turn_update();
-
-	  switch (state)
-	  {
-	  case MODE:
-		  new_state = mode_on_tick(events);
-		  break;
-
-	  case CONFIG:
-		  if (CONFIG != last_state)
-		  {
-			  config_on_entry(mode);
-		  }
-
-		  new_state = config_on_tick(events);
-
-		  if (CONFIG != new_state)
-		  {
-			  config_on_exit();
-		  }
-		  break;
-
-	  case GAME:
-		  if (GAME != last_state)
-		  {
-
-		  }
-
-		  game_on_tick(events);
-		  break;
-
-	  default:
-		  break;
-	  }
-	  last_state = state;
-	  state = new_state;
-
+	  state_machine_tick(events);
 
 	  HAL_Delay(100);
     /* USER CODE END WHILE */
