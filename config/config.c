@@ -25,6 +25,9 @@ void config_on_entry(enum mode mode)
 		config = config_bonus_get();
 		break;
 
+	case BONUSC_CUSTOM:
+		config = config_bonus_control_get();
+
 	default:
 		break;
 	}

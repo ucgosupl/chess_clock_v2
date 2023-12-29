@@ -182,6 +182,7 @@ static void bonus_display(void)
 		display_show_config_inc(&p1_inc, &p2_inc, state);
 	}
 }
+
 static const struct config_interface config_bonus =
 {
 		bonus_on_entry,
