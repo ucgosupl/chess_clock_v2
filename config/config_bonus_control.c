@@ -13,9 +13,9 @@ static struct config_time bonus;
 
 static uint32_t moves = 0;
 
-static config_completed_cb completed_cb = NULL;
+static config_completed_cb_t completed_cb = NULL;
 
-static void bonus_control_on_entry(config_completed_cb cb)
+static void bonus_control_on_entry(config_completed_cb_t cb)
 {
 	completed_cb = cb;
 }

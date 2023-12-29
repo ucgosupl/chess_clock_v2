@@ -1,24 +1,18 @@
 #include "game.h"
 #include <stdlib.h>
 
-//static volatile ms_t time_p1;
-//static volatile ms_t time_p2;
-
-//static ms_t inc_p1;
-//static ms_t inc_p2;
+#include "display/display.h"
+#include "buttons/buttons.h"
 
 static enum state game_state = NOT_STARTED;
 static const struct mode_interface *game_mode = NULL;
 
-
+static void game_move(enum state player);
+static ms_t game_p1_time_get(void);
+static ms_t game_p2_time_get(void);
 
 void game_init(const struct mode_interface *mode)
 {
-//	time_p1 = time + inc;
-//	time_p2 = time + inc;
-//
-//	inc_p1 = inc;
-//	inc_p2 = inc;
 	game_mode = mode;
 
 	game_state = NOT_STARTED;
@@ -30,46 +24,47 @@ void game_start(void)
 	game_mode->on_start();
 }
 
-void game_move(enum state player)
+void game_on_tick(void)
 {
-//	if (player == P2 && time_p1 > 0)
-//	{
-//		time_p1 += inc_p1;
-//	}
-//
-//	if (player == P1 && time_p2 > 0)
-//	{
-//		time_p2 += inc_p2;
-//	}
+	display_show_time(game_p1_time_get(), game_p2_time_get());
 
-	game_mode->on_move(player);
-	game_state = player;
-}
-
-enum state game_state_get(void)
-{
-	return game_state;
+	switch (game_state)
+	{
+	case NOT_STARTED:
+		break;
+	case P1:
+		if (buttons_is_p1_pressed())
+			game_move(P2);
+		break;
+	case P2:
+		if (buttons_is_p2_pressed())
+			game_move(P1);
+		break;
+	default:
+		break;
+	}
 }
 
 void game_time_update(void)
 {
-//	if (game_state == P1 && time_p1 > 0)
-//		time_p1--;
-//	else if (game_state == P2 && time_p2 > 0)
-//		time_p2--;
-//	else {}
 	if (game_mode != NULL)
 	{
 		game_mode->on_time_update(game_state);
 	}
 }
 
-ms_t game_p1_time_get(void)
+static void game_move(enum state player)
+{
+	game_mode->on_move(player);
+	game_state = player;
+}
+
+static ms_t game_p1_time_get(void)
 {
 	return game_mode->time_get(P1);
 }
 
-ms_t game_p2_time_get(void)
+static ms_t game_p2_time_get(void)
 {
 	return game_mode->time_get(P2);
 }

@@ -10,9 +10,9 @@ static struct config_time p2_time;
 static struct config_time p1_inc;
 static struct config_time p2_inc;
 
-static config_completed_cb completed_cb = NULL;
+static config_completed_cb_t completed_cb = NULL;
 
-static void bonus_on_entry(config_completed_cb cb)
+static void bonus_on_entry(config_completed_cb_t cb)
 {
 	completed_cb = cb;
 }

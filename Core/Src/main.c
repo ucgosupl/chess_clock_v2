@@ -94,26 +94,7 @@ uint32_t mode_on_tick(void)
 	return MODE;
 }
 
-void game_on_tick(void)
-{
-	  display_show_time(game_p1_time_get(), game_p2_time_get());
 
-	      switch(game_state_get())
-	      {
-	      case NOT_STARTED:
-	    	  break;
-	      case P1:
-	    	  if (buttons_is_p1_pressed())
-	    		  game_move(P2);
-	    	  break;
-	      case P2:
-	    	  if (buttons_is_p2_pressed())
-	    		  game_move(P1);
-	    	  break;
-	      default:
-	    	  break;
-	      }
-}
 
 /* USER CODE END 0 */
 
