@@ -187,7 +187,10 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-  game_time_update();
+
+  extern void periodic_tick_1ms(void);
+
+  periodic_tick_1ms();
   /* USER CODE END SysTick_IRQn 1 */
 }
 

@@ -21,11 +21,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "buttons/buttons.h"
-#include "events/events.h"
+#include "periodic_tasks/periodic_tasks.h"
 #include "state_machine/state_machine.h"
 #include "display/display.h"
 #include "turn/turn.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,8 +91,13 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   display_init();
-  buttons_init();
+
+  periodic_init();
+
+  turn_init();
   state_machine_init();
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,9 +106,6 @@ int main(void)
 
   while (1)
   {
-	  events_t events = events_update();
-	  turn_update();
-	  state_machine_tick(events);
 	  display_update();
 
 	  HAL_Delay(100);

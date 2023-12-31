@@ -3,10 +3,17 @@
 #include <stdlib.h>
 
 #include "buttons/buttons.h"
+#include "periodic_tasks/periodic_tasks.h"
 
 static enum turn turn;
 
 static on_move_t move_cb = NULL;
+
+void turn_init(void)
+{
+	buttons_init();
+	periodic_subscribe_100ms(turn_update);
+}
 
 void turn_subscribe(on_move_t cb)
 {
