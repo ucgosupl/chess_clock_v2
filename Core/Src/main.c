@@ -24,6 +24,8 @@
 #include "buttons/buttons.h"
 #include "events/events.h"
 #include "state_machine/state_machine.h"
+#include "display/display.h"
+#include "turn/turn.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,6 +104,7 @@ int main(void)
 	  events_t events = events_update();
 	  turn_update();
 	  state_machine_tick(events);
+	  display_update();
 
 	  HAL_Delay(100);
     /* USER CODE END WHILE */

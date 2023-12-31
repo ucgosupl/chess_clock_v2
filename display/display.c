@@ -47,19 +47,12 @@ void display_init(void)
 	LCD_Init();
 }
 
-void display_clear(void)
-{
-	LCD_Clear();
-}
 
 void display_show_mode(uint32_t mode)
 {
 	memcpy(lcd_buf, "MODE:           ", 16);
 	lcd_buf[6] = mode / 10 + '0';
 	lcd_buf[7] = mode % 10 + '0';
-
-	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-	LCD_PrintString(lcd_buf);
 }
 
 void display_show_time(ms_t p1, ms_t p2)
@@ -68,13 +61,7 @@ void display_show_time(ms_t p1, ms_t p2)
 	//h:mm.ss  h:mm:ss
 	ms_to_string(p1, lcd_buf);
 	ms_to_string(p2, lcd_buf + 9);
-
-	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-	LCD_PrintString(lcd_buf);
 }
-
-
-
 
 void display_show_config_time(struct config_time *p1, struct config_time *p2, uint32_t state)
 {
@@ -132,9 +119,6 @@ void display_show_config_time(struct config_time *p1, struct config_time *p2, ui
 			cnt = 0;
 		}
 	}
-
-	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-	LCD_PrintString(lcd_buf);
 }
 
 void display_show_config_inc(struct config_time *p1, struct config_time *p2, uint32_t state)
@@ -143,9 +127,6 @@ void display_show_config_inc(struct config_time *p1, struct config_time *p2, uin
 
 	config_inc_to_str(p1, lcd_buf + 6);
 	config_inc_to_str(p2, lcd_buf + 12);
-
-	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-	LCD_PrintString(lcd_buf);
 }
 
 void display_show_config_moves(uint32_t moves, uint32_t state)
@@ -154,9 +135,6 @@ void display_show_config_moves(uint32_t moves, uint32_t state)
 
 	lcd_buf[7] = '0' + moves / 10;
 	lcd_buf[8] = '0' + moves % 10;
-
-	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
-	LCD_PrintString(lcd_buf);
 }
 
 void display_show_config_bonus(struct config_time *bonus, uint32_t state)
@@ -164,7 +142,10 @@ void display_show_config_bonus(struct config_time *bonus, uint32_t state)
 	memcpy(lcd_buf, "BONUS:          ", 16);
 
 	config_time_to_str(bonus, lcd_buf + 7);
+}
 
+void display_update(void)
+{
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line
 	LCD_PrintString(lcd_buf);
 }
