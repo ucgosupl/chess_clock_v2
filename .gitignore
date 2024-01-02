@@ -11,5 +11,6 @@
 *.launch
 
 # Compilation output
-Debug
-Release
+out/
+Debug/
+Release/

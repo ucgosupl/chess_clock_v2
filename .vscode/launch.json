@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "out/Debug/clock.elf",
+            "name": "Debug clock",
+            "svdFile": "${userHome}/.vscode/extensions/marus25.cortex-debug-dp-stm32f4-1.0.0/data/STM32F411xx.svd",
+            "configFiles": [
+                "interface/stlink-v2-1.cfg", "target/stm32f4x.cfg"
+            ],
+            "runToEntryPoint": "main",
+        },
+    ]
+}
