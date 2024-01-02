@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 #include "mode_interface.h"
+#include "mode_builder.h"
+#include "config/config.h"
 
 enum mode
 {
@@ -31,7 +33,9 @@ enum mode
 	MODES_MAX,
 };
 
+void mode_set(enum mode m);
+const struct config_interface * mode_config_get(void);
+const struct mode_builder * mode_builder_get(void);
 const struct mode_interface * mode_interface_get(void);
-void mode_interface_set(const struct mode_interface *i);
 
 #endif /* MODE_H_ */

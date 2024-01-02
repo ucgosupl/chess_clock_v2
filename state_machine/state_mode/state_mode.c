@@ -12,7 +12,7 @@ void mode_on_entry(void)
 
 }
 
-uint32_t mode_on_tick(events_t events)
+enum state mode_on_tick(events_t events)
 {
 	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
@@ -30,8 +30,7 @@ uint32_t mode_on_tick(events_t events)
 	}
 	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
 	{
-		//TODO: handle state properly
-		return 1;
+		return CONFIG;
 	}
 	else
 	{
@@ -40,15 +39,10 @@ uint32_t mode_on_tick(events_t events)
 
 	display_show_mode(mode);
 
-	return 0;
+	return MODE;
 }
 
 void mode_on_exit(void)
 {
-
-}
-
-enum mode mode_get(void)
-{
-	return mode;
+	mode_set(mode);
 }

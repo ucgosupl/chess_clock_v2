@@ -1,4 +1,5 @@
 #include "mode_interface.h"
+#include "mode_builder.h"
 
 struct bonus_control_data
 {
@@ -23,7 +24,7 @@ static void bonus_control_on_start(void)
 	//do nothing
 }
 
-static void bonus_control_on_time_update(enum turn whose_turn)
+static void bonus_control_on_time_update(enum player whose_turn)
 {
 	if ((whose_turn == PLAYER1) && (data.time_p1 > 0))
 		data.time_p1--;
@@ -32,7 +33,7 @@ static void bonus_control_on_time_update(enum turn whose_turn)
 	else {}
 }
 
-static void bonus_control_on_move(enum turn who_moved)
+static void bonus_control_on_move(enum player who_moved)
 {
 	if ((who_moved == PLAYER1) && (data.time_p1 > 0))
 	{
@@ -55,7 +56,7 @@ static void bonus_control_on_move(enum turn who_moved)
 	}
 }
 
-static ms_t bonus_control_time_get(enum turn player)
+static ms_t bonus_control_time_get(enum player player)
 {
 	switch (player)
 	{
@@ -76,22 +77,112 @@ static const struct mode_interface bonus_control_mode =
 		bonus_control_time_get,
 };
 
- void bonus_control_init(ms_t time, ms_t inc, moves_t moves, ms_t bonus)
-{
-	data.time_p1 = time + inc;
-	data.time_p2 = time + inc;
-
-	data.inc_p1 = inc;
-	data.inc_p2 = inc;
-
-	data.moves_p1 = 0;
-	data.moves_p2 = 0;
-
-	data.control_on_move = moves;
-	data.bonus = bonus;
-}
-
 const struct mode_interface * bonus_control_interface_get(void)
 {
 	return &bonus_control_mode;
+}
+
+static void bonus_control_init(void)
+{
+	data.moves_p1 = 0;
+	data.moves_p2 = 0;
+}
+
+static void bonus_control_set_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void bonus_control_set_increment(enum player p, ms_t i)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.inc_p1 = i;
+			data.time_p1 += i;
+			break;
+		case PLAYER2:
+			data.inc_p2 = i;
+			data.time_p2 += i;
+			break;
+		case PLAYER_BOTH:
+			data.inc_p1 = i;
+			data.time_p1 += i;
+
+			data.inc_p2 = i;
+			data.time_p2 += i;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void bonus_control_set_bonus(enum player p, ms_t b)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.bonus = b;
+			break;
+		case PLAYER2:
+			data.bonus = b;
+			break;
+		case PLAYER_BOTH:
+			data.bonus = b;
+			data.bonus = b;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void bonus_control_set_moves(enum player p, moves_t m)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.control_on_move = m;
+			break;
+		case PLAYER2:
+			data.control_on_move = m;
+			break;
+		case PLAYER_BOTH:
+			data.control_on_move = m;
+			data.control_on_move = m;
+			break;
+
+		default:
+			break;
+	}	
+}
+
+static const struct mode_builder bonus_control_builder =
+{
+	bonus_control_init,
+	bonus_control_set_time,
+	bonus_control_set_increment,
+	bonus_control_set_bonus,
+	bonus_control_set_moves,
+};
+
+const struct mode_builder * bonus_control_builder_get(void)
+{
+	return &bonus_control_builder;
 }

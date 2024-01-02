@@ -1,4 +1,5 @@
 #include "mode_interface.h"
+#include "mode_builder.h"
 
 struct fixed_control_data
 {
@@ -20,7 +21,7 @@ static void fixed_control_on_start(void)
 	//do nothing
 }
 
-static void fixed_control_on_time_update(enum turn whose_turn)
+static void fixed_control_on_time_update(enum player whose_turn)
 {
 	if ((whose_turn == PLAYER1) && (data.time_p1 > 0))
 		data.time_p1--;
@@ -29,7 +30,7 @@ static void fixed_control_on_time_update(enum turn whose_turn)
 	else {}
 }
 
-static void fixed_control_on_move(enum turn who_moved)
+static void fixed_control_on_move(enum player who_moved)
 {
 	if ((who_moved == PLAYER1) && (data.time_p1 > 0))
 	{
@@ -50,7 +51,7 @@ static void fixed_control_on_move(enum turn who_moved)
 	}
 }
 
-static ms_t fixed_control_time_get(enum turn player)
+static ms_t fixed_control_time_get(enum player player)
 {
 	switch (player)
 	{
@@ -71,21 +72,93 @@ static const struct mode_interface fixed_control_mode =
 		fixed_control_time_get,
 };
 
-void fixed_control_init(ms_t time, moves_t moves, ms_t bonus)
-{
-	data.time_p1 = time;
-	data.time_p2 = time;
-
-	data.moves_p1 = 0;
-	data.moves_p2 = 0;
-
-	data.control_on_move = moves;
-	data.bonus = bonus;
-
-	return &fixed_control_mode;
-}
-
 const struct mode_interface * fixed_control_interface_get(void)
 {
 	return &fixed_control_mode;
+}
+
+static void fixed_control_init(void)
+{
+	data.moves_p1 = 0;
+	data.moves_p2 = 0;
+}
+
+static void fixed_control_set_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void fixed_control_set_increment(enum player p, ms_t i)
+{
+	(void) p;
+	(void) i;
+}
+
+static void fixed_control_set_bonus(enum player p, ms_t b)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.bonus = b;
+			break;
+		case PLAYER2:
+			data.bonus = b;
+			break;
+		case PLAYER_BOTH:
+			data.bonus = b;
+			data.bonus = b;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void fixed_control_set_moves(enum player p, moves_t m)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.control_on_move = m;
+			break;
+		case PLAYER2:
+			data.control_on_move = m;
+			break;
+		case PLAYER_BOTH:
+			data.control_on_move = m;
+			data.control_on_move = m;
+			break;
+
+		default:
+			break;
+	}	
+}
+
+static const struct mode_builder fixed_control_builder =
+{
+	fixed_control_init,
+	fixed_control_set_time,
+	fixed_control_set_increment,
+	fixed_control_set_bonus,
+	fixed_control_set_moves,
+};
+
+const struct mode_builder * fixed_control_builder_get(void)
+{
+	return &fixed_control_builder;
 }

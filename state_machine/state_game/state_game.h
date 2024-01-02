@@ -4,10 +4,10 @@
 #include <stdint.h>
 
 #include "events/events.h"
-#include "mode/mode_interface.h"
+#include "../state.h"
 
 void game_on_entry(void);
-void game_on_tick(events_t events);
+enum state game_on_tick(events_t events);
 void game_on_exit(void);
 void game_time_update(void);
 
