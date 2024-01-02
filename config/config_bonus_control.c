@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "display/display.h"
+#include "mode/mode_builder.h"
 
 static enum config_state state;
 
@@ -12,7 +13,7 @@ static struct config_time p1_inc;
 static struct config_time p2_inc;
 static struct config_time bonus;
 
-static uint32_t moves = 0;
+static moves_t moves = 0;
 
 static config_completed_cb_t completed_cb = NULL;
 
@@ -20,9 +21,6 @@ static void bonus_control_on_entry(config_completed_cb_t cb)
 {
 	completed_cb = cb;
 }
-
-#include "mode/mode_builder.h"
-#include "turn/turn.h"
 
 static void bonus_control_on_exit(void)
 {
@@ -33,8 +31,6 @@ static void bonus_control_on_exit(void)
 	builder->set_increment(PLAYER_BOTH, TIME_TO_MS(0, p1_inc.m1*10 + p1_inc.m2, p1_inc.s1*10 + p1_inc.s2));
 	builder->set_moves(PLAYER_BOTH, moves);
 	builder->set_bonus(PLAYER_BOTH, TIME_TO_MS(bonus.h, bonus.m1*10 + bonus.m2, bonus.s1*10 + bonus.s2));
-
-	mode_interface_set(bonus_control_interface_get());
 }
 
 static void bonus_control_on_plus(void)

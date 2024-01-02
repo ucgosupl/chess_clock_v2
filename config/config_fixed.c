@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "display/display.h"
+#include "mode/mode_builder.h"
 
 static enum config_state state;
 
@@ -16,17 +17,12 @@ static void fixed_on_entry(config_completed_cb_t cb)
 	completed_cb = cb;
 }
 
-#include "mode/mode_builder.h"
-#include "turn/turn.h"
-
 static void fixed_on_exit(void)
 {
 	struct mode_builder *builder = fixed_builder_get();
 
 	builder->init();
 	builder->set_time(PLAYER_BOTH, TIME_TO_MS(p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2));
-
-	mode_interface_set(fixed_interface_get());
 }
 
 static void fixed_on_plus(void)

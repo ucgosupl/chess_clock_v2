@@ -1,39 +1,22 @@
 #include "state_config.h"
 
 #include "config/config.h"
+#include "mode/mode.h"
 
 static uint32_t state;
 
-const struct config_interface *config;
+static const struct config_interface *config;
 
 static void completed_cb(void)
 {
 	state = 2;
 }
 
-void config_on_entry(enum mode mode)
+void config_on_entry(void)
 {
 	state = 1;
 
-	switch (mode)
-	{
-	case FIXED_CUSTOM:
-		config = config_fixed_get();
-		break;
-
-	case BONUS_CUSTOM:
-		config = config_bonus_get();
-		break;
-
-	case BONUSC_CUSTOM:
-		config = config_bonus_control_get();
-		break;
-
-	default:
-		config = config_fixed_get();
-		break;
-	}
-
+	config = mode_config_get();
 
 	config->on_entry(completed_cb);
 }

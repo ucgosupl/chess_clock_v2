@@ -45,10 +45,5 @@ uint32_t mode_on_tick(events_t events)
 
 void mode_on_exit(void)
 {
-
-}
-
-enum mode mode_get(void)
-{
-	return mode;
+	mode_set(mode);
 }

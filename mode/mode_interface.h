@@ -2,15 +2,12 @@
 #define MODE_INTERFACE_H_
 
 #include "time.h"
-
-#include "turn/turn.h"
-
-typedef uint32_t moves_t;
+#include "player.h"
 
 typedef void (*on_start)(void);
-typedef void (*on_time_update)(enum turn player);
-typedef void (*on_move)(enum turn player);
-typedef ms_t (*time_get)(enum turn player);
+typedef void (*on_time_update)(enum player player);
+typedef void (*on_move)(enum player player);
+typedef ms_t (*time_get)(enum player player);
 
 struct mode_interface
 {

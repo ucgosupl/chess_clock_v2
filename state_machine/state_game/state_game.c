@@ -11,11 +11,11 @@ enum state {NOT_STARTED, STARTED, PAUSED};
 static enum state game_state = NOT_STARTED;
 static const struct mode_interface *game_mode = NULL;
 
-static void game_on_move(enum turn who_moved);
+static void game_on_move(enum player who_moved);
 static ms_t game_p1_time_get(void);
 static ms_t game_p2_time_get(void);
 
-static void game_on_move(enum turn who_moved)
+static void game_on_move(enum player who_moved)
 {
 	if (STARTED == game_state)
 	{

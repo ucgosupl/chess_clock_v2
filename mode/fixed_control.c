@@ -21,7 +21,7 @@ static void fixed_control_on_start(void)
 	//do nothing
 }
 
-static void fixed_control_on_time_update(enum turn whose_turn)
+static void fixed_control_on_time_update(enum player whose_turn)
 {
 	if ((whose_turn == PLAYER1) && (data.time_p1 > 0))
 		data.time_p1--;
@@ -30,7 +30,7 @@ static void fixed_control_on_time_update(enum turn whose_turn)
 	else {}
 }
 
-static void fixed_control_on_move(enum turn who_moved)
+static void fixed_control_on_move(enum player who_moved)
 {
 	if ((who_moved == PLAYER1) && (data.time_p1 > 0))
 	{
@@ -51,7 +51,7 @@ static void fixed_control_on_move(enum turn who_moved)
 	}
 }
 
-static ms_t fixed_control_time_get(enum turn player)
+static ms_t fixed_control_time_get(enum player player)
 {
 	switch (player)
 	{
@@ -72,7 +72,7 @@ static const struct mode_interface fixed_control_mode =
 		fixed_control_time_get,
 };
 
-static const struct mode_interface * fixed_control_interface_get(void)
+const struct mode_interface * fixed_control_interface_get(void)
 {
 	return &fixed_control_mode;
 }
@@ -83,7 +83,7 @@ static void fixed_control_init(void)
 	data.moves_p2 = 0;
 }
 
-static void fixed_control_set_time(uint32_t p, ms_t t)
+static void fixed_control_set_time(enum player p, ms_t t)
 {
 	switch(p)
 	{
@@ -103,12 +103,13 @@ static void fixed_control_set_time(uint32_t p, ms_t t)
 	}
 }
 
-static void fixed_control_set_increment(uint32_t p, ms_t i)
+static void fixed_control_set_increment(enum player p, ms_t i)
 {
-
+	(void) p;
+	(void) i;
 }
 
-static void fixed_control_set_bonus(uint32_t p, ms_t b)
+static void fixed_control_set_bonus(enum player p, ms_t b)
 {
 	switch(p)
 	{
@@ -128,7 +129,7 @@ static void fixed_control_set_bonus(uint32_t p, ms_t b)
 	}
 }
 
-static void fixed_control_set_moves(uint32_t p, uint32_t m)
+static void fixed_control_set_moves(enum player p, moves_t m)
 {
 	switch(p)
 	{

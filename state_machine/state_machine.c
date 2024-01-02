@@ -45,7 +45,7 @@ static void state_machine_tick(events_t events)
 	case CONFIG:
 		if (CONFIG != last_state)
 		{
-			config_on_entry(mode_get());
+			config_on_entry();
 		}
 
 		new_state = config_on_tick(events);
