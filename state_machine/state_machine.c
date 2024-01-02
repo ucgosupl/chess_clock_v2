@@ -5,11 +5,9 @@
 #include "state_config/state_config.h"
 #include "periodic_tasks/periodic_tasks.h"
 
-enum clock_state {MODE, CONFIG, GAME};
-
-static enum clock_state last_state;
-static enum clock_state new_state;
-static enum clock_state state = MODE;
+static enum state last_state;
+static enum state new_state;
+static enum state state = MODE;
 
 static void state_machine_tick(events_t events);
 
@@ -62,7 +60,7 @@ static void state_machine_tick(events_t events)
 			game_on_entry();
 		}
 
-		game_on_tick(events);
+		new_state = game_on_tick(events);
 
 		if (GAME != new_state)
 		{

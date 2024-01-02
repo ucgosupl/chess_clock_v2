@@ -3,25 +3,25 @@
 #include "config/config.h"
 #include "mode/mode.h"
 
-static uint32_t state;
+static enum state state;
 
 static const struct config_interface *config;
 
 static void completed_cb(void)
 {
-	state = 2;
+	state = GAME;
 }
 
 void config_on_entry(void)
 {
-	state = 1;
+	state = CONFIG;
 
 	config = mode_config_get();
 
 	config->on_entry(completed_cb);
 }
 
-uint32_t config_on_tick(events_t events)
+enum state config_on_tick(events_t events)
 {
 	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
