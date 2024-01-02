@@ -21,13 +21,19 @@ static void bonus_control_on_entry(config_completed_cb_t cb)
 	completed_cb = cb;
 }
 
+#include "mode/mode_builder.h"
+#include "turn/turn.h"
+
 static void bonus_control_on_exit(void)
 {
-	bonus_control_init(
-			TIME_TO_MS(p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2),
-			TIME_TO_MS(0, p1_inc.m1*10 + p1_inc.m2, p1_inc.s1*10 + p1_inc.s2),
-			moves,
-			TIME_TO_MS(bonus.h, bonus.m1*10 + bonus.m2, bonus.s1*10 + bonus.s2));
+	struct mode_builder *builder = bonus_control_builder_get();
+
+	builder->init();
+	builder->set_time(PLAYER_BOTH, TIME_TO_MS(p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2));
+	builder->set_increment(PLAYER_BOTH, TIME_TO_MS(0, p1_inc.m1*10 + p1_inc.m2, p1_inc.s1*10 + p1_inc.s2));
+	builder->set_moves(PLAYER_BOTH, moves);
+	builder->set_bonus(PLAYER_BOTH, TIME_TO_MS(bonus.h, bonus.m1*10 + bonus.m2, bonus.s1*10 + bonus.s2));
+
 	mode_interface_set(bonus_control_interface_get());
 }
 

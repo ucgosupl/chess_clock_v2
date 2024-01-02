@@ -31,6 +31,10 @@ enum mode
 	MODES_MAX,
 };
 
+//mode_set
+//mode_builder_get
+//mode_interface_get
+
 const struct mode_interface * mode_interface_get(void);
 void mode_interface_set(const struct mode_interface *i);
 

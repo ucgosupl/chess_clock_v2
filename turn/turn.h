@@ -1,7 +1,7 @@
 #ifndef TURN_H_
 #define TURN_H_
 
-enum turn {PLAYER1, PLAYER2};
+enum turn {PLAYER1, PLAYER2, PLAYER_BOTH};
 
 typedef void (*on_move_t)(enum turn who_moved);
 
