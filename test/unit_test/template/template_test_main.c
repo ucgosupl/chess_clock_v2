@@ -4,9 +4,7 @@ static void run_all_tests(void);
 
 int main(int argc, const char **argv)
 {
-   UnityMain(argc, argv, run_all_tests);
-
-   return 0;
+   return UnityMain(argc, argv, run_all_tests);
 }
 
 static void run_all_tests(void)

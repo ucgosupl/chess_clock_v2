@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(template_test C)
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_AR ar)
+set(CMAKE_RANLIB ranlib)
 
 add_subdirectory(../unity unity)
 
@@ -29,8 +29,11 @@ set(GLOBAL_DEFINES
 
 )
 
-include_directories(${INCLUDE_DIRS} ${TEST_INCLUDE_DIRS})
-add_definitions(${GLOBAL_DEFINES})
+add_executable(unit_test_template ${SRCS} ${TEST_SRCS})
+add_test(template unit_test_template)
 
-link_libraries(unity)
-add_executable(${PROJECT_NAME} ${SRCS} ${TEST_SRCS})
+target_include_directories(unit_test_template PRIVATE ${INCLUDE_DIRS} ${TEST_INCLUDE_DIRS})
+target_compile_definitions(unit_test_template PRIVATE ${GLOBAL_DEFINES})
+target_link_libraries(unit_test_template PRIVATE unity)
+
+

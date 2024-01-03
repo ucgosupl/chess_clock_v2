@@ -6,6 +6,9 @@ enable_language(ASM)
 
 project(clock)
 
+include(CTest)
+add_subdirectory(test/unit_test/template)
+
 include(cmake/compiler_flags.cmake)
 
 set(INCLUDE_DIRS
