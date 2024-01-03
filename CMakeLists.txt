@@ -6,6 +6,8 @@ enable_language(ASM)
 
 project(clock)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include(CTest)
 add_subdirectory(test/unit_test/template)
 
@@ -18,7 +20,7 @@ set(INCLUDE_DIRS
     Drivers/STM32F4xx_HAL_Driver/Legacy
     Drivers/CMSIS/Device/ST/STM32F4xx/Include
     Drivers/CMSIS/Include
-
+    
     .
 )
 
