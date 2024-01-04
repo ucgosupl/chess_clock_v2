@@ -40,7 +40,10 @@ const struct mode_builder * mode_builder_get(void)
 
 		case BONUSC_CUSTOM:
 			return bonus_control_builder_get();
-		
+
+		case FIXEDC_CUSTOM:
+			return fixed_control_builder_get();
+			
 		default:
 			//TODO: handle errors
 			return NULL;
@@ -59,6 +62,9 @@ const struct mode_interface *mode_interface_get(void)
 
 		case BONUSC_CUSTOM:
 			return bonus_control_interface_get();
+		
+		case FIXEDC_CUSTOM:
+			return fixed_control_interface_get();
 		
 		default:
 			//TODO: handle errors

@@ -2,8 +2,6 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_AR ar)
 set(CMAKE_RANLIB ranlib)
 
-add_subdirectory(../unity unity)
-
 set(CMAKE_C_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 set(SRC_PATH ../../../)
@@ -18,20 +16,29 @@ set(TEST_INCLUDE_DIRS
 )
 
 set(SRCS
-
+	${SRC_PATH}/mode/mode.c
+	${SRC_PATH}/mode/fixed.c
+	${SRC_PATH}/mode/bonus.c
+	${SRC_PATH}/mode/bonus_control.c
+	${SRC_PATH}/mode/fixed_control.c
 )
 
-set(TEST_NAME template)
-
 set(TEST_SRCS
-	${TEST_NAME}_test_main.c
-	${TEST_NAME}_test_runner.c
-	${TEST_NAME}_test.c
+	game_modes_test_main.c
+	game_modes_test_runner.c
+	game_mode_fixed_test.c
+	game_mode_bonus_test.c
+	game_mode_fixed_control_test.c
+	game_mode_bonus_control_test.c
+	
+	mocks.c
 )
 
 set(GLOBAL_DEFINES
 
 )
+
+set(TEST_NAME game_modes)
 
 add_executable(unit_test_${TEST_NAME} ${SRCS} ${TEST_SRCS})
 add_test(${TEST_NAME} unit_test_${TEST_NAME})

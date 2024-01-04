@@ -34,7 +34,7 @@
             "label": "test clock",
             "type": "shell",
             "command": "ctest",
-            "args": ["--output-on-failure"],
+            "args": ["--verbose"],
             "options": {
                 "cwd": "${workspaceFolder}/out/Debug"
             },
