@@ -4,6 +4,7 @@
 #include "state_mode/state_mode.h"
 #include "state_config/state_config.h"
 #include "periodic_tasks/periodic_tasks.h"
+#include "buttons/buttons.h"
 
 static enum state last_state;
 static enum state new_state;

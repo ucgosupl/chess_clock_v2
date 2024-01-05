@@ -1,11 +1,10 @@
 #include "state_config.h"
 
-#include "config/config.h"
 #include "mode/mode.h"
 
 static enum state state;
 
-static const struct config_interface *config;
+static const struct config_controller *config;
 
 static void completed_cb(void)
 {
@@ -16,7 +15,7 @@ void config_on_entry(void)
 {
 	state = CONFIG;
 
-	config = mode_config_get();
+	config = mode_config_controller_get();
 
 	config->on_entry(completed_cb);
 }

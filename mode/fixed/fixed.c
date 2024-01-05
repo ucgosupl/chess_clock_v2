@@ -1,5 +1,4 @@
-#include "mode_interface.h"
-#include "mode_builder.h"
+#include "mode_fixed.h"
 
 struct fixed_data
 {
@@ -26,7 +25,7 @@ static void fixed_on_time_update(enum player whose_turn)
 
 static void fixed_on_move(enum player who_moved)
 {
-	//do nothing
+	(void) who_moved;
 }
 
 static ms_t fixed_time_get(enum player player)
@@ -42,7 +41,7 @@ static ms_t fixed_time_get(enum player player)
 	}
 }
 
-static const struct mode_interface fixed_mode =
+static const struct game_controller fixed_mode =
 {
 		fixed_on_start,
 		fixed_on_time_update,
@@ -50,7 +49,7 @@ static const struct mode_interface fixed_mode =
 		fixed_time_get,
 };
 
-const struct mode_interface * fixed_interface_get(void)
+const struct game_controller * fixed_game_controller_get(void)
 {
 	return &fixed_mode;
 }
@@ -107,7 +106,7 @@ static const struct mode_builder fixed_builder =
 	fixed_set_moves,
 };
 
-const struct mode_builder * fixed_builder_get(void)
+const struct mode_builder * fixed_mode_builder_get(void)
 {
 	return &fixed_builder;
 }

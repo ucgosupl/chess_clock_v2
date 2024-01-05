@@ -30,5 +30,18 @@
                 "isDefault": true
             }
         },
+        {
+            "label": "test clock",
+            "type": "shell",
+            "command": "ctest",
+            "args": ["--verbose"],
+            "options": {
+                "cwd": "${workspaceFolder}/out/Debug"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+        },
     ]
 }

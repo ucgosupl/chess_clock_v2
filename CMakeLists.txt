@@ -6,6 +6,16 @@ enable_language(ASM)
 
 project(clock)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+include(CTest)
+
+add_subdirectory(test/unit_test/unity unity)
+add_subdirectory(test/unit_test/fff fff)
+
+add_subdirectory(test/unit_test/game_modes)
+add_subdirectory(test/unit_test/config)
+
 include(cmake/compiler_flags.cmake)
 
 set(INCLUDE_DIRS
@@ -15,7 +25,7 @@ set(INCLUDE_DIRS
     Drivers/STM32F4xx_HAL_Driver/Legacy
     Drivers/CMSIS/Device/ST/STM32F4xx/Include
     Drivers/CMSIS/Include
-
+    
     .
 )
 
@@ -47,20 +57,24 @@ set(C_SRCS
     #User Code
     buttons/buttons.c
 
-    config/config_bonus_control.c
-    config/config_bonus.c
-    config/config_fixed.c
-
     display/display.c
 
     events/events.c
 
     hd44780/hd44780.c
 
-    mode/bonus_control.c
-    mode/bonus.c
-    mode/fixed_control.c
-    mode/fixed.c
+    mode/fixed/fixed.c
+    mode/fixed/config_fixed.c
+
+    mode/fixed_control/fixed_control.c
+    mode/fixed_control/config_fixed_control.c
+
+    mode/bonus/bonus.c
+    mode/bonus/config_bonus.c
+
+    mode/bonus_control/bonus_control.c
+    mode/bonus_control/config_bonus_control.c
+
     mode/mode.c
 
     periodic_tasks/periodic_tasks.c

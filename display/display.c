@@ -63,7 +63,7 @@ void display_show_time(ms_t p1, ms_t p2)
 	ms_to_string(p2, lcd_buf + 9);
 }
 
-void display_show_config_time(struct config_time *p1, struct config_time *p2, uint32_t state)
+void display_show_config_time(struct config_time *p1, struct config_time *p2, enum config_state state)
 {
 	static uint32_t cnt = 0;
 
@@ -121,7 +121,7 @@ void display_show_config_time(struct config_time *p1, struct config_time *p2, ui
 	}
 }
 
-void display_show_config_inc(struct config_time *p1, struct config_time *p2, uint32_t state)
+void display_show_config_inc(struct config_time *p1, struct config_time *p2, enum config_state state)
 {
 	memcpy(lcd_buf, "INC:            ", 16);
 
@@ -129,15 +129,15 @@ void display_show_config_inc(struct config_time *p1, struct config_time *p2, uin
 	config_inc_to_str(p2, lcd_buf + 12);
 }
 
-void display_show_config_moves(uint32_t moves, uint32_t state)
+void display_show_config_moves(struct config_moves *moves, enum config_state state)
 {
 	memcpy(lcd_buf, "MOVES:          ", 16);
 
-	lcd_buf[7] = '0' + moves / 10;
-	lcd_buf[8] = '0' + moves % 10;
+	lcd_buf[7] = '0' + moves->moves1;
+	lcd_buf[8] = '0' + moves->moves2;
 }
 
-void display_show_config_bonus(struct config_time *bonus, uint32_t state)
+void display_show_config_bonus(struct config_time *bonus, enum config_state state)
 {
 	memcpy(lcd_buf, "BONUS:          ", 16);
 
