@@ -22,6 +22,11 @@ void config_on_entry(void)
 
 enum state config_on_tick(events_t events)
 {
+	if (state != CONFIG)
+	{
+		return state;
+	}
+	
 	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
 		config->on_plus();
