@@ -14,6 +14,34 @@ void mode_set(enum mode m)
 	mode = m;
 }
 
+void set_mode_fixed_1m(void)
+{
+	const struct mode_builder *builder = mode_builder_get();
+
+	builder->init();
+	builder->set_time(PLAYER_BOTH, TIME_TO_MS(0, 1, 0));
+}
+
+static void empty_on_entry(config_completed_cb_t cb)
+{
+	cb();
+}
+
+static void empty_fun(void)
+{
+
+}
+
+const static struct config_controller config_empty = {
+	empty_on_entry,
+	empty_fun,
+	empty_fun,
+	empty_fun,
+	empty_fun,
+	empty_fun,
+	empty_fun,
+};
+
 const struct config_controller * mode_config_controller_get(void)
 {
 	switch (mode)
@@ -30,6 +58,10 @@ const struct config_controller * mode_config_controller_get(void)
 		case FIXEDC_CUSTOM:
 			return fixed_control_config_controller_get();
 		
+		case FIXED_1M:
+			set_mode_fixed_1m();
+			return &config_empty;
+		
 		default:
 			//TODO: handle errors
 			return NULL;
@@ -40,6 +72,7 @@ const struct mode_builder * mode_builder_get(void)
 {
 	switch (mode)
 	{
+		case FIXED_1M:
 		case FIXED_CUSTOM:
 			return fixed_mode_builder_get();
 
@@ -62,6 +95,7 @@ const struct game_controller *mode_game_controller_get(void)
 {
 	switch (mode)
 	{
+		case FIXED_1M:
 		case FIXED_CUSTOM:
 			return fixed_game_controller_get();
 
