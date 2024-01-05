@@ -18,6 +18,8 @@ static const struct config_controller * set_mode_fixed_1h30min(void);
 
 static const struct config_controller * set_mode_bonus_1m_inc_1s(void);
 
+static const struct config_controller * set_mode_bonus_control_1h30M_inc_30s_40mov_bonus_30min(void);
+
 void mode_set(enum mode m)
 {
 	mode = m;
@@ -60,6 +62,9 @@ const struct config_controller * mode_config_controller_get(void)
 		case BONUS_1M_1S:
 			return set_mode_bonus_1m_inc_1s();
 		
+		case BONUSC_1H30M_30S_40MOV_30M:
+			return set_mode_bonus_control_1h30M_inc_30s_40mov_bonus_30min();
+		
 		default:
 			//TODO: handle errors
 			return NULL;
@@ -83,6 +88,7 @@ const struct mode_builder * mode_builder_get(void)
 		case BONUS_CUSTOM:
 			return bonus_mode_builder_get();
 
+		case BONUSC_1H30M_30S_40MOV_30M:
 		case BONUSC_CUSTOM:
 			return bonus_control_mode_builder_get();
 
@@ -112,6 +118,7 @@ const struct game_controller * mode_game_controller_get(void)
 		case BONUS_CUSTOM:
 			return bonus_game_controller_get();
 
+		case BONUSC_1H30M_30S_40MOV_30M:
 		case BONUSC_CUSTOM:
 			return bonus_control_game_controller_get();
 		
@@ -211,6 +218,19 @@ static const struct config_controller * set_mode_bonus_1m_inc_1s(void)
 	builder->init();
 	builder->set_time(PLAYER_BOTH, TIME_TO_MS(0, 1, 0));
 	builder->set_increment(PLAYER_BOTH, TIME_TO_MS(0, 0, 1));
+
+	return &config_empty;
+}
+
+static const struct config_controller * set_mode_bonus_control_1h30M_inc_30s_40mov_bonus_30min(void)
+{
+	const struct mode_builder *builder = mode_builder_get();
+
+	builder->init();
+	builder->set_time(PLAYER_BOTH, TIME_TO_MS(1, 30, 0));
+	builder->set_increment(PLAYER_BOTH, TIME_TO_MS(0, 0, 30));
+	builder->set_moves(PLAYER_BOTH, 40);
+	builder->set_bonus(PLAYER_BOTH, TIME_TO_MS(0, 30, 0));
 
 	return &config_empty;
 }
