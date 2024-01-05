@@ -12,4 +12,5 @@ static void run_all_tests(void)
    RUN_TEST_GROUP(config_fixed);
    RUN_TEST_GROUP(config_bonus);
    RUN_TEST_GROUP(config_bonus_control);
+   RUN_TEST_GROUP(config_fixed_control);
 }

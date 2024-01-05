@@ -25,6 +25,7 @@ set(SRCS
 	${SRC_PATH}/config/config_fixed.c
 	${SRC_PATH}/config/config_bonus.c
 	${SRC_PATH}/config/config_bonus_control.c
+	${SRC_PATH}/config/config_fixed_control.c
 )
 
 set(TEST_NAME config)
@@ -36,6 +37,7 @@ set(TEST_SRCS
 	config_fixed_test.c
 	config_bonus_test.c
 	config_bonus_control_test.c
+	config_fixed_control_test.c
 
 	display_mocks.c
 )

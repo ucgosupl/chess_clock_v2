@@ -58,6 +58,7 @@ set(C_SRCS
     buttons/buttons.c
 
     config/config_bonus_control.c
+    config/config_fixed_control.c
     config/config_bonus.c
     config/config_fixed.c
 

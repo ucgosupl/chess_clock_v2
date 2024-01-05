@@ -21,6 +21,9 @@ const struct config_interface * mode_config_get(void)
 
 		case BONUSC_CUSTOM:
 			return config_bonus_control_get();
+
+		case FIXEDC_CUSTOM:
+			return config_fixed_control_get();
 		
 		default:
 			//TODO: handle errors

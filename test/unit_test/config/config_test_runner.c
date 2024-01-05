@@ -93,3 +93,37 @@ TEST_GROUP_RUNNER(config_bonus_control)
    RUN_TEST_CASE(config_bonus_control, ConfigNotDone);
    RUN_TEST_CASE(config_bonus_control, ConfigDone);
 }
+
+TEST_GROUP_RUNNER(config_fixed_control)
+{
+   /* Test cases to run */
+   RUN_TEST_CASE(config_fixed_control, P1AddHours);
+   RUN_TEST_CASE(config_fixed_control, P1SubtractHours);
+   RUN_TEST_CASE(config_fixed_control, P1SubtractHourBounds);
+   RUN_TEST_CASE(config_fixed_control, P1AddHourBounds);
+   RUN_TEST_CASE(config_fixed_control, P1LeftBounds);
+   RUN_TEST_CASE(config_fixed_control, P1AddTenMinutes);
+   RUN_TEST_CASE(config_fixed_control, P1AddMinutes);
+   RUN_TEST_CASE(config_fixed_control, P1AddTenSeconds);
+   RUN_TEST_CASE(config_fixed_control, P1AddSeconds);
+
+   RUN_TEST_CASE(config_fixed_control, P2AddHours);
+   RUN_TEST_CASE(config_fixed_control, P2AddTenMinutes);
+   RUN_TEST_CASE(config_fixed_control, P2AddMinutes);
+   RUN_TEST_CASE(config_fixed_control, P2AddTenSeconds);
+   RUN_TEST_CASE(config_fixed_control, P2AddSeconds);
+
+   RUN_TEST_CASE(config_fixed_control, AddTenMoves);
+   RUN_TEST_CASE(config_fixed_control, AddMoves);
+
+   RUN_TEST_CASE(config_fixed_control, BonusAddHours);
+   RUN_TEST_CASE(config_fixed_control, BonusAddTenMinutes);
+   RUN_TEST_CASE(config_fixed_control, BonusAddMinutes);
+   RUN_TEST_CASE(config_fixed_control, BonusAddTenSeconds);
+   RUN_TEST_CASE(config_fixed_control, BonusAddSeconds);
+
+   RUN_TEST_CASE(config_fixed_control, ConfigNotDone);
+   RUN_TEST_CASE(config_fixed_control, ConfigDone);
+
+   RUN_TEST_CASE(config_fixed_control, OnLeftSkipIncrement);
+}

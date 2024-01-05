@@ -16,3 +16,8 @@ const struct config_interface * config_bonus_control_get(void)
 {
     return NULL;
 }
+
+const struct config_interface * config_fixed_control_get(void)
+{
+    return NULL;
+}
