@@ -17,10 +17,11 @@ set(TEST_INCLUDE_DIRS
 
 set(SRCS
 	${SRC_PATH}/mode/mode.c
-	${SRC_PATH}/mode/fixed.c
-	${SRC_PATH}/mode/bonus.c
-	${SRC_PATH}/mode/bonus_control.c
-	${SRC_PATH}/mode/fixed_control.c
+
+	${SRC_PATH}/mode/fixed/fixed.c
+	${SRC_PATH}/mode/fixed_control/fixed_control.c
+	${SRC_PATH}/mode/bonus/bonus.c
+	${SRC_PATH}/mode/bonus_control/bonus_control.c
 )
 
 set(TEST_SRCS

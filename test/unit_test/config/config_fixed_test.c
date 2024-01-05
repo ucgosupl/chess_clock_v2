@@ -3,12 +3,10 @@
 
 #include "assert.h"
 
-#include "config/config.h"
 #include "mode/mode.h"
-
 #include "display_mocks.h"
 
-static void go_to_config_state(const struct config_interface * config, enum config_state state);
+static void go_to_config_state(const struct config_controller * config, enum config_state state);
 
 TEST_GROUP(config_fixed);
 
@@ -23,7 +21,7 @@ TEST_SETUP(config_fixed)
 
     mode_set(FIXED_CUSTOM);
 
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
     config->on_entry(config_completed);
 }
 
@@ -34,7 +32,7 @@ TEST_TEAR_DOWN(config_fixed)
 
 TEST(config_fixed, P1AddHours)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     config->on_plus();
     config->display();
@@ -44,7 +42,7 @@ TEST(config_fixed, P1AddHours)
 
 TEST(config_fixed, P1SubtractHours)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     config->on_plus();
     config->on_minus();
@@ -55,7 +53,7 @@ TEST(config_fixed, P1SubtractHours)
 
 TEST(config_fixed, P1SubtractHourBounds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     config->on_minus();
     config->display();
@@ -65,7 +63,7 @@ TEST(config_fixed, P1SubtractHourBounds)
 
 TEST(config_fixed, P1AddHourBounds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     for (int i = 0; i < 10; i++)
     {
@@ -79,7 +77,7 @@ TEST(config_fixed, P1AddHourBounds)
 
 TEST(config_fixed, P1LeftBounds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     config->on_left();
     config->on_plus();
@@ -91,7 +89,7 @@ TEST(config_fixed, P1LeftBounds)
 
 TEST(config_fixed, P1AddTenMinutes)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P1_MIN1);
 
@@ -103,7 +101,7 @@ TEST(config_fixed, P1AddTenMinutes)
 
 TEST(config_fixed, P1AddMinutes)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P1_MIN2);
 
@@ -115,7 +113,7 @@ TEST(config_fixed, P1AddMinutes)
 
 TEST(config_fixed, P1AddTenSeconds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P1_SEC1);
 
@@ -127,7 +125,7 @@ TEST(config_fixed, P1AddTenSeconds)
 
 TEST(config_fixed, P1AddSeconds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P1_SEC2);
 
@@ -139,7 +137,7 @@ TEST(config_fixed, P1AddSeconds)
 
 TEST(config_fixed, P2AddHours)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_HOURS);
 
@@ -151,7 +149,7 @@ TEST(config_fixed, P2AddHours)
 
 TEST(config_fixed, P2AddTenMinutes)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_MIN1);
 
@@ -163,7 +161,7 @@ TEST(config_fixed, P2AddTenMinutes)
 
 TEST(config_fixed, P2AddMinutes)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_MIN2);
 
@@ -175,7 +173,7 @@ TEST(config_fixed, P2AddMinutes)
 
 TEST(config_fixed, P2AddTenSeconds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_SEC1);
 
@@ -187,7 +185,7 @@ TEST(config_fixed, P2AddTenSeconds)
 
 TEST(config_fixed, P2AddSeconds)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_SEC2);
 
@@ -199,7 +197,7 @@ TEST(config_fixed, P2AddSeconds)
 
 TEST(config_fixed, ConfigNotDone)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_SEC2);
 
@@ -208,14 +206,14 @@ TEST(config_fixed, ConfigNotDone)
 
 TEST(config_fixed, ConfigDone)
 {
-    const struct config_interface * config = mode_config_get();
+    const struct config_controller * config = mode_config_controller_get();
 
     go_to_config_state(config, P2_SEC2 + 1);
 
     TEST_ASSERT_EQUAL(1, config_completed_fake.call_count);
 }
 
-static void go_to_config_state(const struct config_interface * config, enum config_state state)
+static void go_to_config_state(const struct config_controller * config, enum config_state state)
 {
     for (uint32_t i = 0; i < state; i++)
     {

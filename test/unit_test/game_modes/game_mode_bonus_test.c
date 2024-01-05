@@ -25,7 +25,7 @@ TEST_TEAR_DOWN(game_mode_bonus)
 
 TEST(game_mode_bonus, TimeSetAfterConfig)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     TEST_ASSERT_EQUAL_UINT32(START_TIME + INCREMENT, mode->time_get(PLAYER1));
     TEST_ASSERT_EQUAL_UINT32(START_TIME + INCREMENT, mode->time_get(PLAYER2));
@@ -33,7 +33,7 @@ TEST(game_mode_bonus, TimeSetAfterConfig)
 
 TEST(game_mode_bonus, P1TimeDecreasedAfterUpdate)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER1);
 
@@ -43,7 +43,7 @@ TEST(game_mode_bonus, P1TimeDecreasedAfterUpdate)
 
 TEST(game_mode_bonus, P2TimeDecreasedAfterUpdate)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER2);
 
@@ -53,7 +53,7 @@ TEST(game_mode_bonus, P2TimeDecreasedAfterUpdate)
 
 TEST(game_mode_bonus, IncrementAddedAfterP1AfterMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER1);
     mode->on_move(PLAYER1);
@@ -64,7 +64,7 @@ TEST(game_mode_bonus, IncrementAddedAfterP1AfterMove)
 
 TEST(game_mode_bonus, IncrementAddedAfterP2AfterMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER2);
     mode->on_move(PLAYER2);

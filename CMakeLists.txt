@@ -57,21 +57,24 @@ set(C_SRCS
     #User Code
     buttons/buttons.c
 
-    config/config_bonus_control.c
-    config/config_fixed_control.c
-    config/config_bonus.c
-    config/config_fixed.c
-
     display/display.c
 
     events/events.c
 
     hd44780/hd44780.c
 
-    mode/bonus_control.c
-    mode/bonus.c
-    mode/fixed_control.c
-    mode/fixed.c
+    mode/fixed/fixed.c
+    mode/fixed/config_fixed.c
+
+    mode/fixed_control/fixed_control.c
+    mode/fixed_control/config_fixed_control.c
+
+    mode/bonus/bonus.c
+    mode/bonus/config_bonus.c
+
+    mode/bonus_control/bonus_control.c
+    mode/bonus_control/config_bonus_control.c
+
     mode/mode.c
 
     periodic_tasks/periodic_tasks.c

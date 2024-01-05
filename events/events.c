@@ -1,5 +1,7 @@
 #include "events.h"
 
+#include "buttons/buttons.h"
+
 events_t events_update(void)
 {
 	events_t events = 0;

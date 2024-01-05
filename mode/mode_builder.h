@@ -5,6 +5,7 @@
 
 #include "player.h"
 #include "moves.h"
+#include "time.h"
 
 typedef void (*init_t)(void);
 typedef void (*set_time_t)(enum player p, ms_t t);

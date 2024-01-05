@@ -1,5 +1,5 @@
-#ifndef MODE_INTERFACE_H_
-#define MODE_INTERFACE_H_
+#ifndef GAME_CONTROLLER_H_
+#define GAME_CONTROLLER_H_
 
 #include "time.h"
 #include "player.h"
@@ -9,7 +9,7 @@ typedef void (*on_time_update)(enum player player);
 typedef void (*on_move)(enum player player);
 typedef ms_t (*time_get)(enum player player);
 
-struct mode_interface
+struct game_controller
 {
 	on_start on_start;
 	on_time_update on_time_update;
@@ -17,4 +17,4 @@ struct mode_interface
 	time_get time_get;
 };
 
-#endif /* MODE_INTERFACE_H_ */
+#endif /* GAME_CONTROLLER_H_ */

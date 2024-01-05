@@ -1,5 +1,4 @@
-#include "mode_interface.h"
-#include "mode_builder.h"
+#include "mode_bonus.h"
 
 struct bonus_data
 {
@@ -53,7 +52,7 @@ static ms_t bonus_time_get(enum player player)
 	}
 }
 
-static const struct mode_interface bonus_mode =
+static const struct game_controller bonus_mode =
 {
 		bonus_on_start,
 		bonus_on_time_update,
@@ -61,7 +60,7 @@ static const struct mode_interface bonus_mode =
 		bonus_time_get,
 };
 
-const struct mode_interface * bonus_interface_get(void)
+const struct game_controller * bonus_game_controller_get(void)
 {
 	return &bonus_mode;
 }
@@ -137,7 +136,7 @@ static const struct mode_builder bonus_builder =
 	bonus_set_moves,
 };
 
-const struct mode_builder * bonus_builder_get(void)
+const struct mode_builder * bonus_mode_builder_get(void)
 {
 	return &bonus_builder;
 }

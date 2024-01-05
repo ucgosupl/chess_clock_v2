@@ -27,7 +27,7 @@ TEST_TEAR_DOWN(game_mode_fixed_control)
 
 TEST(game_mode_fixed_control, TimeSetAfterConfig)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     TEST_ASSERT_EQUAL_UINT32(START_TIME, mode->time_get(PLAYER1));
     TEST_ASSERT_EQUAL_UINT32(START_TIME, mode->time_get(PLAYER2));
@@ -35,7 +35,7 @@ TEST(game_mode_fixed_control, TimeSetAfterConfig)
 
 TEST(game_mode_fixed_control, P1TimeDecreasedAfterUpdate)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER1);
 
@@ -45,7 +45,7 @@ TEST(game_mode_fixed_control, P1TimeDecreasedAfterUpdate)
 
 TEST(game_mode_fixed_control, P2TimeDecreasedAfterUpdate)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER2);
 
@@ -55,7 +55,7 @@ TEST(game_mode_fixed_control, P2TimeDecreasedAfterUpdate)
 
 TEST(game_mode_fixed_control, P1TimeNotChangedAfterMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER1);
     mode->on_move(PLAYER1);
@@ -66,7 +66,7 @@ TEST(game_mode_fixed_control, P1TimeNotChangedAfterMove)
 
 TEST(game_mode_fixed_control, P2TimeNotChangedAfterMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER2);
     mode->on_move(PLAYER2);
@@ -77,9 +77,9 @@ TEST(game_mode_fixed_control, P2TimeNotChangedAfterMove)
 
 TEST(game_mode_fixed_control, NoBonusOneMoveBeforeControl)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
-    for (int i = 0; i < MOVES - 1; i++)
+    for (moves_t i = 0; i < MOVES - 1; i++)
     {
         mode->on_move(PLAYER1);
         mode->on_move(PLAYER2);
@@ -91,9 +91,9 @@ TEST(game_mode_fixed_control, NoBonusOneMoveBeforeControl)
 
 TEST(game_mode_fixed_control, P1BonusAddedAfterControl)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
-    for (int i = 0; i < MOVES - 1; i++)
+    for (moves_t i = 0; i < MOVES - 1; i++)
     {
         mode->on_move(PLAYER1);
         mode->on_move(PLAYER2);
@@ -107,9 +107,9 @@ TEST(game_mode_fixed_control, P1BonusAddedAfterControl)
 
 TEST(game_mode_fixed_control, P2BonusAddedAfterControl)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
-    for (int i = 0; i < MOVES - 1; i++)
+    for (moves_t i = 0; i < MOVES - 1; i++)
     {
         mode->on_move(PLAYER1);
         mode->on_move(PLAYER2);
@@ -123,9 +123,9 @@ TEST(game_mode_fixed_control, P2BonusAddedAfterControl)
 
 TEST(game_mode_fixed_control, P1BonusAddedThenP2BonusAddedAfterControl)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
-    for (int i = 0; i < MOVES - 1; i++)
+    for (moves_t i = 0; i < MOVES - 1; i++)
     {
         mode->on_move(PLAYER1);
         mode->on_move(PLAYER2);
@@ -140,9 +140,9 @@ TEST(game_mode_fixed_control, P1BonusAddedThenP2BonusAddedAfterControl)
 
 TEST(game_mode_fixed_control, P2BonusAddedThenP1BonusAddedAfterControl)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
-    for (int i = 0; i < MOVES - 1; i++)
+    for (moves_t i = 0; i < MOVES - 1; i++)
     {
         mode->on_move(PLAYER1);
         mode->on_move(PLAYER2);
@@ -157,9 +157,9 @@ TEST(game_mode_fixed_control, P2BonusAddedThenP1BonusAddedAfterControl)
 
 TEST(game_mode_fixed_control, NoSecondBonusAfterNextMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
-    for (int i = 0; i < MOVES; i++)
+    for (moves_t i = 0; i < MOVES; i++)
     {
         mode->on_move(PLAYER1);
         mode->on_move(PLAYER2);

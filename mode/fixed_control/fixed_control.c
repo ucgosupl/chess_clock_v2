@@ -1,5 +1,4 @@
-#include "mode_interface.h"
-#include "mode_builder.h"
+#include "mode_fixed_control.h"
 
 struct fixed_control_data
 {
@@ -64,7 +63,7 @@ static ms_t fixed_control_time_get(enum player player)
 	}
 }
 
-static const struct mode_interface fixed_control_mode =
+static const struct game_controller fixed_control_mode =
 {
 		fixed_control_on_start,
 		fixed_control_on_time_update,
@@ -72,7 +71,7 @@ static const struct mode_interface fixed_control_mode =
 		fixed_control_time_get,
 };
 
-const struct mode_interface * fixed_control_interface_get(void)
+const struct game_controller * fixed_control_game_controller_get(void)
 {
 	return &fixed_control_mode;
 }
@@ -158,7 +157,7 @@ static const struct mode_builder fixed_control_builder =
 	fixed_control_set_moves,
 };
 
-const struct mode_builder * fixed_control_builder_get(void)
+const struct mode_builder * fixed_control_mode_builder_get(void)
 {
 	return &fixed_control_builder;
 }

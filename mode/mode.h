@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
-#include "mode_interface.h"
+#include "game_controller.h"
 #include "mode_builder.h"
-#include "config/config.h"
+#include "mode/config_controller.h"
 
 enum mode
 {
@@ -35,8 +35,9 @@ enum mode
 };
 
 void mode_set(enum mode m);
-const struct config_interface * mode_config_get(void);
+
+const struct config_controller * mode_config_controller_get(void);
 const struct mode_builder * mode_builder_get(void);
-const struct mode_interface * mode_interface_get(void);
+const struct game_controller * mode_game_controller_get(void);
 
 #endif /* MODE_H_ */

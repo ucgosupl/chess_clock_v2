@@ -1,23 +1,23 @@
-#include "config/config.h"
+#include "mode/config_controller.h"
 
 #include <stdlib.h>
 
-const struct config_interface * config_fixed_get(void)
+const struct config_controller * fixed_config_controller_get(void)
 {
     return NULL;
 }
 
-const struct config_interface * config_bonus_get(void)
+const struct config_controller * bonus_config_controller_get(void)
 {
     return NULL;
 }
 
-const struct config_interface * config_bonus_control_get(void)
+const struct config_controller * bonus_control_config_controller_get(void)
 {
     return NULL;
 }
 
-const struct config_interface * config_fixed_control_get(void)
+const struct config_controller * fixed_control_config_controller_get(void)
 {
     return NULL;
 }

@@ -17,15 +17,18 @@ set(TEST_INCLUDE_DIRS
 
 set(SRCS
 	${SRC_PATH}/mode/mode.c
-	${SRC_PATH}/mode/fixed.c
-	${SRC_PATH}/mode/bonus.c
-	${SRC_PATH}/mode/bonus_control.c
-	${SRC_PATH}/mode/fixed_control.c
 
-	${SRC_PATH}/config/config_fixed.c
-	${SRC_PATH}/config/config_bonus.c
-	${SRC_PATH}/config/config_bonus_control.c
-	${SRC_PATH}/config/config_fixed_control.c
+	${SRC_PATH}/mode/fixed/fixed.c
+	${SRC_PATH}/mode/fixed/config_fixed.c
+
+	${SRC_PATH}/mode/fixed_control/fixed_control.c
+	${SRC_PATH}/mode/fixed_control/config_fixed_control.c
+
+	${SRC_PATH}/mode/bonus/bonus.c
+	${SRC_PATH}/mode/bonus/config_bonus.c
+
+	${SRC_PATH}/mode/bonus_control/bonus_control.c
+	${SRC_PATH}/mode/bonus_control/config_bonus_control.c
 )
 
 set(TEST_NAME config)

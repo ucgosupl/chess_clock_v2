@@ -1,10 +1,9 @@
-#include "config.h"
+#include "mode_fixed.h"
 
 #include <stdlib.h>
 #include <string.h>
 
 #include "display/display.h"
-#include "mode/mode_builder.h"
 
 static enum config_state state;
 
@@ -59,7 +58,7 @@ static void fixed_on_entry(config_completed_cb_t cb)
 
 static void fixed_on_exit(void)
 {
-	struct mode_builder *builder = fixed_builder_get();
+	const struct mode_builder *builder = fixed_mode_builder_get();
 
 	builder->init();
 	builder->set_time(PLAYER_BOTH, TIME_TO_MS(p1_time.h, p1_time.m1*10 + p1_time.m2, p1_time.s1*10 + p1_time.s2));
@@ -104,7 +103,7 @@ static void fixed_display(void)
 	display_show_config_time(&p1_time, &p2_time, state);
 }
 
-static const struct config_interface config_fixed =
+static const struct config_controller config_fixed =
 {
 		fixed_on_entry,
 		fixed_on_exit,
@@ -115,7 +114,7 @@ static const struct config_interface config_fixed =
 		fixed_display,
 };
 
-const struct config_interface * config_fixed_get(void)
+const struct config_controller * fixed_config_controller_get(void)
 {
 	return &config_fixed;
 }

@@ -23,7 +23,7 @@ TEST_TEAR_DOWN(game_mode_fixed)
 
 TEST(game_mode_fixed, TimeSetAfterConfig)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     TEST_ASSERT_EQUAL_UINT32(START_TIME, mode->time_get(PLAYER1));
     TEST_ASSERT_EQUAL_UINT32(START_TIME, mode->time_get(PLAYER2));
@@ -31,7 +31,7 @@ TEST(game_mode_fixed, TimeSetAfterConfig)
 
 TEST(game_mode_fixed, P1TimeDecreasedAfterUpdate)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER1);
 
@@ -41,7 +41,7 @@ TEST(game_mode_fixed, P1TimeDecreasedAfterUpdate)
 
 TEST(game_mode_fixed, P2TimeDecreasedAfterUpdate)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER2);
 
@@ -51,7 +51,7 @@ TEST(game_mode_fixed, P2TimeDecreasedAfterUpdate)
 
 TEST(game_mode_fixed, P1TimeNotChangedAfterMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER1);
     mode->on_move(PLAYER1);
@@ -62,7 +62,7 @@ TEST(game_mode_fixed, P1TimeNotChangedAfterMove)
 
 TEST(game_mode_fixed, P2TimeNotChangedAfterMove)
 {
-    const struct mode_interface *mode = mode_interface_get();
+    const struct game_controller *mode = mode_game_controller_get();
 
     mode->on_time_update(PLAYER2);
     mode->on_move(PLAYER2);
