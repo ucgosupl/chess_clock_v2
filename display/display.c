@@ -129,12 +129,12 @@ void display_show_config_inc(struct config_time *p1, struct config_time *p2, uin
 	config_inc_to_str(p2, lcd_buf + 12);
 }
 
-void display_show_config_moves(uint32_t moves, uint32_t state)
+void display_show_config_moves(struct config_moves *moves, uint32_t state)
 {
 	memcpy(lcd_buf, "MOVES:          ", 16);
 
-	lcd_buf[7] = '0' + moves / 10;
-	lcd_buf[8] = '0' + moves % 10;
+	lcd_buf[7] = '0' + moves->moves1;
+	lcd_buf[8] = '0' + moves->moves2;
 }
 
 void display_show_config_bonus(struct config_time *bonus, uint32_t state)

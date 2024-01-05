@@ -37,6 +37,8 @@ enum config_state
 	BONUS_SEC2,
 
 	CONFIG_DONE,
+
+	CONFIG_STATE_MAX,
 };
 
 struct config_time
@@ -48,6 +50,12 @@ struct config_time
 
 	uint8_t s1;
 	uint8_t s2;
+};
+
+struct config_moves
+{
+	uint8_t moves1;
+	uint8_t moves2;
 };
 
 typedef void (*config_completed_cb_t)(void);

@@ -13,6 +13,40 @@ static struct config_time p2_time;
 
 static config_completed_cb_t completed_cb = NULL;
 
+static uint8_t * const config_state_to_val_mapper[CONFIG_STATE_MAX] = 
+{
+	&p1_time.h,
+	&p1_time.m1,
+	&p1_time.m2,
+	&p1_time.s1,
+	&p1_time.s2,
+
+	&p2_time.h,
+	&p2_time.m1,
+	&p2_time.m2,
+	&p2_time.s1,
+	&p2_time.s2,
+
+	NULL,
+	NULL,
+	NULL,
+
+	NULL,
+	NULL,
+	NULL,
+
+	NULL,
+	NULL,
+
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+
+	NULL,
+};
+
 static void fixed_on_entry(config_completed_cb_t cb)
 {
 	memset(&p1_time, 0, sizeof(struct config_time));
@@ -33,84 +67,14 @@ static void fixed_on_exit(void)
 
 static void fixed_on_plus(void)
 {
-	switch (state)
-	{
-	case P1_HOURS:
-		p1_time.h = add_with_bounds(p1_time.h);
-		break;
-	case P1_MIN1:
-		p1_time.m1 = add_with_bounds(p1_time.m1);
-		break;
-	case P1_MIN2:
-		p1_time.m2 = add_with_bounds(p1_time.m2);
-		break;
-	case P1_SEC1:
-		p1_time.s1 = add_with_bounds(p1_time.s1);
-		break;
-	case P1_SEC2:
-		p1_time.s2 = add_with_bounds(p1_time.s2);
-		break;
-
-	case P2_HOURS:
-		p2_time.h = add_with_bounds(p2_time.h);
-		break;
-	case P2_MIN1:
-		p2_time.m1 = add_with_bounds(p2_time.m1);
-		break;
-	case P2_MIN2:
-		p2_time.m2 = add_with_bounds(p2_time.m2);
-		break;
-	case P2_SEC1:
-		p2_time.s1 = add_with_bounds(p2_time.s1);
-		break;
-	case P2_SEC2:
-		p2_time.s2 = add_with_bounds(p2_time.s2);
-		break;
-
-	default:
-		break;
-	}
+	if (state < P2_SEC2 + 1)
+		*config_state_to_val_mapper[state] = add_with_bounds(*config_state_to_val_mapper[state]);
 }
 
 static void fixed_on_minus(void)
 {
-	switch (state)
-	{
-	case P1_HOURS:
-		p1_time.h = sub_with_bounds(p1_time.h);
-		break;
-	case P1_MIN1:
-		p1_time.m1 = sub_with_bounds(p1_time.m1);
-		break;
-	case P1_MIN2:
-		p1_time.m2 = sub_with_bounds(p1_time.m2);
-		break;
-	case P1_SEC1:
-		p1_time.s1 = sub_with_bounds(p1_time.s1);
-		break;
-	case P1_SEC2:
-		p1_time.s2 = sub_with_bounds(p1_time.s2);
-		break;
-
-	case P2_HOURS:
-		p2_time.h = sub_with_bounds(p2_time.h);
-		break;
-	case P2_MIN1:
-		p2_time.m1 = sub_with_bounds(p2_time.m1);
-		break;
-	case P2_MIN2:
-		p2_time.m2 = sub_with_bounds(p2_time.m2);
-		break;
-	case P2_SEC1:
-		p2_time.s1 = sub_with_bounds(p2_time.s1);
-		break;
-	case P2_SEC2:
-		p2_time.s2 = sub_with_bounds(p2_time.s2);
-		break;
-
-	default:
-		break;
-	}
+	if (state < P2_SEC2 + 1)
+		*config_state_to_val_mapper[state] = sub_with_bounds(*config_state_to_val_mapper[state]);
 }
 
 static void fixed_on_left(void)

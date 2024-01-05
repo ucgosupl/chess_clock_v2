@@ -278,7 +278,7 @@ TEST(config_bonus_control, AddTenMoves)
     config->on_plus();
     config->display();
 
-    TEST_ASSERT_EQUAL(10, display_show_config_moves_fake.arg0_val);
+    TEST_ASSERT_EQUAL(1, display_show_config_moves_fake.arg0_val->moves1);
 }
 
 TEST(config_bonus_control, AddMoves)
@@ -290,8 +290,9 @@ TEST(config_bonus_control, AddMoves)
     config->on_plus();
     config->display();
 
-    TEST_ASSERT_EQUAL(1, display_show_config_moves_fake.arg0_val);
+    TEST_ASSERT_EQUAL(1, display_show_config_moves_fake.arg0_val->moves2);
 }
+
 TEST(config_bonus_control, BonusAddHours)
 {
     const struct config_interface * config = mode_config_get();
