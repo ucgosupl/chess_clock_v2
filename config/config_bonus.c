@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "display/display.h"
 #include "mode/mode_builder.h"
@@ -16,6 +17,13 @@ static config_completed_cb_t completed_cb = NULL;
 
 static void bonus_on_entry(config_completed_cb_t cb)
 {
+	memset(&p1_time, 0, sizeof(struct config_time));
+	memset(&p2_time, 0, sizeof(struct config_time));
+	memset(&p1_inc, 0, sizeof(struct config_time));
+	memset(&p2_inc, 0, sizeof(struct config_time));
+
+	state = P1_HOURS;
+
 	completed_cb = cb;
 }
 
@@ -160,11 +168,9 @@ static void bonus_on_left(void)
 
 static void bonus_on_right(void)
 {
-	if (P2_INC_SEC2 > state)
-	{
-		state++;
-	}
-	else
+	state++;
+	
+	if (P2_INC_SEC2 < state)
 	{
 		state = CONFIG_DONE;
 		if (NULL != completed_cb)

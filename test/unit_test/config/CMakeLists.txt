@@ -16,15 +16,28 @@ set(TEST_INCLUDE_DIRS
 )
 
 set(SRCS
+	${SRC_PATH}/mode/mode.c
+	${SRC_PATH}/mode/fixed.c
+	${SRC_PATH}/mode/bonus.c
+	${SRC_PATH}/mode/bonus_control.c
+	${SRC_PATH}/mode/fixed_control.c
 
+	${SRC_PATH}/config/config_fixed.c
+	${SRC_PATH}/config/config_bonus.c
+	${SRC_PATH}/config/config_bonus_control.c
 )
 
-set(TEST_NAME template)
+set(TEST_NAME config)
 
 set(TEST_SRCS
 	${TEST_NAME}_test_main.c
 	${TEST_NAME}_test_runner.c
-	${TEST_NAME}_test.c
+
+	config_fixed_test.c
+	config_bonus_test.c
+	config_bonus_control_test.c
+
+	display_mocks.c
 )
 
 set(GLOBAL_DEFINES
