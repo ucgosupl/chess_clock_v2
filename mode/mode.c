@@ -86,7 +86,8 @@ const struct game_controller * mode_game_controller_get(void)
 
 static void empty_on_entry(config_completed_cb_t cb)
 {
-	cb();
+	if (NULL != cb)
+		cb();
 }
 
 static void empty_fun(void)
