@@ -15,6 +15,7 @@ add_subdirectory(test/unit_test/fff fff)
 
 add_subdirectory(test/unit_test/game_modes)
 add_subdirectory(test/unit_test/config)
+add_subdirectory(test/unit_test/preset_modes)
 
 include(cmake/compiler_flags.cmake)
 
