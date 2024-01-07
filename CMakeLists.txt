@@ -13,10 +13,12 @@ include(CTest)
 add_subdirectory(test/unit_test/unity unity)
 add_subdirectory(test/unit_test/fff fff)
 
+add_subdirectory(test/unit_test/events)
 add_subdirectory(test/unit_test/game_modes)
 add_subdirectory(test/unit_test/config)
 add_subdirectory(test/unit_test/preset_modes)
-add_subdirectory(test/unit_test/events)
+add_subdirectory(test/unit_test/edit)
+
 
 include(cmake/compiler_flags.cmake)
 
