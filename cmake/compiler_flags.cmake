@@ -35,7 +35,7 @@ set(CXX_WARNINGS "-Wall -Wextra")
 # -Wstrict-prototypes - additional warnings for function prototypes
 set(C_WARNINGS "-Wall -Wextra -Wstrict-prototypes")
 
-set(LD_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F411RETX_FLASH.ld)
+set(LD_SCRIPT ${CMAKE_SOURCE_DIR}/src/STM32F411RETX_FLASH.ld)
 # Linker flags
 # -Wl, -Map - map file to be created
 # -T - file with linker script
