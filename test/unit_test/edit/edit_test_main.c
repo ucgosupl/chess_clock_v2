@@ -10,4 +10,6 @@ int main(int argc, const char **argv)
 static void run_all_tests(void)
 {
    RUN_TEST_GROUP(edit_fixed);
+   RUN_TEST_GROUP(edit_bonus);
+   RUN_TEST_GROUP(edit_bonus_control);
 }

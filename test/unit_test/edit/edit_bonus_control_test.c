@@ -7,31 +7,38 @@
 
 static void go_to_edit_state(const struct config_controller * edit, enum edit_state state);
 
-TEST_GROUP(edit_fixed);
+TEST_GROUP(edit_bonus_control);
 
-TEST_SETUP(edit_fixed)
+TEST_SETUP(edit_bonus_control)
 {
     RESET_FAKE(display_show_edit_time);
     RESET_FAKE(display_show_edit_moves);
     RESET_FAKE(config_completed);
     FFF_RESET_HISTORY();
 
-    mode_set(FIXED_CUSTOM);
+    mode_set(BONUSC_CUSTOM);
 
     const struct mode_builder * mode_builder = mode_builder_get();
     mode_builder->init();
     mode_builder->set_time(PLAYER_BOTH, TIME_TO_MS(1, 0, 0));
+    mode_builder->set_increment(PLAYER_BOTH, TIME_TO_MS(0, 0, 0));
+    mode_builder->set_moves(PLAYER_BOTH, 30);
+
+    const struct game_controller *game = mode_game_controller_get();
+    game->on_move(PLAYER1);
+    game->on_move(PLAYER2);
+    game->on_move(PLAYER1);
 
     const struct config_controller * edit = mode_edit_controller_get();
     edit->on_entry(config_completed);
 }
 
-TEST_TEAR_DOWN(edit_fixed)
+TEST_TEAR_DOWN(edit_bonus_control)
 {
     /* Cleanup after every test */
 }
 
-TEST(edit_fixed, P1AddHours)
+TEST(edit_bonus_control, P1AddHours)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -41,7 +48,7 @@ TEST(edit_fixed, P1AddHours)
     TEST_ASSERT_EQUAL(2, display_show_edit_time_fake.arg0_val->h);
 }
 
-TEST(edit_fixed, P1SubtractHours)
+TEST(edit_bonus_control, P1SubtractHours)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -52,7 +59,7 @@ TEST(edit_fixed, P1SubtractHours)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg0_val->h);
 }
 
-TEST(edit_fixed, P1SubtractHourBounds)
+TEST(edit_bonus_control, P1SubtractHourBounds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -63,7 +70,7 @@ TEST(edit_fixed, P1SubtractHourBounds)
     TEST_ASSERT_EQUAL(0, display_show_edit_time_fake.arg0_val->h);
 }
 
-TEST(edit_fixed, P1AddHourBounds)
+TEST(edit_bonus_control, P1AddHourBounds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -77,7 +84,7 @@ TEST(edit_fixed, P1AddHourBounds)
     TEST_ASSERT_EQUAL(9, display_show_edit_time_fake.arg0_val->h);
 }
 
-TEST(edit_fixed, P1LeftBounds)
+TEST(edit_bonus_control, P1LeftBounds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -88,7 +95,7 @@ TEST(edit_fixed, P1LeftBounds)
     TEST_ASSERT_EQUAL(2, display_show_edit_time_fake.arg0_val->h);
 }
 
-TEST(edit_fixed, P1AddTenMinutes)
+TEST(edit_bonus_control, P1AddTenMinutes)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -100,7 +107,7 @@ TEST(edit_fixed, P1AddTenMinutes)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg0_val->m1);
 }
 
-TEST(edit_fixed, P1AddMinutes)
+TEST(edit_bonus_control, P1AddMinutes)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -112,7 +119,7 @@ TEST(edit_fixed, P1AddMinutes)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg0_val->m2);
 }
 
-TEST(edit_fixed, P1AddTenSeconds)
+TEST(edit_bonus_control, P1AddTenSeconds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -124,7 +131,7 @@ TEST(edit_fixed, P1AddTenSeconds)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg0_val->s1);
 }
 
-TEST(edit_fixed, P1AddSeconds)
+TEST(edit_bonus_control, P1AddSeconds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -136,7 +143,7 @@ TEST(edit_fixed, P1AddSeconds)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg0_val->s2);
 }
 
-TEST(edit_fixed, P2AddHours)
+TEST(edit_bonus_control, P2AddHours)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -148,7 +155,7 @@ TEST(edit_fixed, P2AddHours)
     TEST_ASSERT_EQUAL(2, display_show_edit_time_fake.arg1_val->h);
 }
 
-TEST(edit_fixed, P2AddTenMinutes)
+TEST(edit_bonus_control, P2AddTenMinutes)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -160,7 +167,7 @@ TEST(edit_fixed, P2AddTenMinutes)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg1_val->m1);
 }
 
-TEST(edit_fixed, P2AddMinutes)
+TEST(edit_bonus_control, P2AddMinutes)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -172,7 +179,7 @@ TEST(edit_fixed, P2AddMinutes)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg1_val->m2);
 }
 
-TEST(edit_fixed, P2AddTenSeconds)
+TEST(edit_bonus_control, P2AddTenSeconds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -184,7 +191,7 @@ TEST(edit_fixed, P2AddTenSeconds)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg1_val->s1);
 }
 
-TEST(edit_fixed, P2AddSeconds)
+TEST(edit_bonus_control, P2AddSeconds)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
@@ -196,20 +203,68 @@ TEST(edit_fixed, P2AddSeconds)
     TEST_ASSERT_EQUAL(1, display_show_edit_time_fake.arg1_val->s2);
 }
 
-TEST(edit_fixed, EditNotDone)
+TEST(edit_bonus_control, P1AddTenMoves)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
-    go_to_edit_state(edit, EDIT_P2_SEC2);
+    go_to_edit_state(edit, EDIT_P1_MOVES1);
+
+    edit->on_plus();
+    edit->display();
+
+    TEST_ASSERT_EQUAL(1, display_show_edit_moves_fake.arg0_val->moves1);
+}
+
+TEST(edit_bonus_control, P1AddMoves)
+{
+    const struct config_controller * edit = mode_edit_controller_get();
+
+    go_to_edit_state(edit, EDIT_P1_MOVES2);
+
+    edit->on_plus();
+    edit->display();
+
+    TEST_ASSERT_EQUAL(3, display_show_edit_moves_fake.arg0_val->moves2);
+}
+
+TEST(edit_bonus_control, P2AddTenMoves)
+{
+    const struct config_controller * edit = mode_edit_controller_get();
+
+    go_to_edit_state(edit, EDIT_P2_MOVES1);
+
+    edit->on_plus();
+    edit->display();
+
+    TEST_ASSERT_EQUAL(1, display_show_edit_moves_fake.arg1_val->moves1);
+}
+
+TEST(edit_bonus_control, P2AddMoves)
+{
+    const struct config_controller * edit = mode_edit_controller_get();
+
+    go_to_edit_state(edit, EDIT_P2_MOVES2);
+
+    edit->on_plus();
+    edit->display();
+
+    TEST_ASSERT_EQUAL(2, display_show_edit_moves_fake.arg1_val->moves2);
+}
+
+TEST(edit_bonus_control, EditNotDone)
+{
+    const struct config_controller * edit = mode_edit_controller_get();
+
+    go_to_edit_state(edit, EDIT_DONE - 1);
 
     TEST_ASSERT_EQUAL(0, config_completed_fake.call_count);
 }
 
-TEST(edit_fixed, EditDone)
+TEST(edit_bonus_control, EditDone)
 {
     const struct config_controller * edit = mode_edit_controller_get();
 
-    go_to_edit_state(edit, EDIT_P2_SEC2 + 1);
+    go_to_edit_state(edit, EDIT_DONE);
 
     TEST_ASSERT_EQUAL(1, config_completed_fake.call_count);
 }

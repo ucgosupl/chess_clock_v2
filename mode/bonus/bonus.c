@@ -52,12 +52,18 @@ static ms_t bonus_time_get(enum player player)
 	}
 }
 
+static moves_t bonus_moves_get(enum player player)
+{
+	return 0;
+}
+
 static const struct game_controller bonus_mode =
 {
 		bonus_on_start,
 		bonus_on_time_update,
 		bonus_on_move,
 		bonus_time_get,
+		bonus_moves_get,
 };
 
 const struct game_controller * bonus_game_controller_get(void)

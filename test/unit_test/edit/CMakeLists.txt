@@ -40,6 +40,8 @@ set(TEST_SRCS
 	${TEST_NAME}_test_main.c
 	${TEST_NAME}_test_runner.c
 	${TEST_NAME}_fixed_test.c
+	${TEST_NAME}_bonus_test.c
+	${TEST_NAME}_bonus_control_test.c
 
 	display_mocks.c
 )

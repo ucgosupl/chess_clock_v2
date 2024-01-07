@@ -68,12 +68,30 @@ static ms_t bonus_control_time_get(enum player player)
 	}
 }
 
+static moves_t bonus_control_moves_get(enum player player)
+{
+	switch(player)
+	{
+		case PLAYER1:
+			return data.moves_p1;
+
+		case PLAYER2:
+			return data.moves_p2;
+
+		default:
+			break;
+	}
+
+	return 0;
+}
+
 static const struct game_controller bonus_control_mode =
 {
 		bonus_control_on_start,
 		bonus_control_on_time_update,
 		bonus_control_on_move,
 		bonus_control_time_get,
+		bonus_control_moves_get,
 };
 
 const struct game_controller * bonus_control_game_controller_get(void)

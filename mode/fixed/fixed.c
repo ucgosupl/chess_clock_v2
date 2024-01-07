@@ -41,12 +41,18 @@ static ms_t fixed_time_get(enum player player)
 	}
 }
 
+static moves_t fixed_moves_get(enum player player)
+{
+	return 0;
+}
+
 static const struct game_controller fixed_mode =
 {
 		fixed_on_start,
 		fixed_on_time_update,
 		fixed_on_move,
 		fixed_time_get,
+		fixed_moves_get,
 };
 
 const struct game_controller * fixed_game_controller_get(void)

@@ -53,6 +53,12 @@ static void ms2config(struct config_time *ct, ms_t time)
 	ct->s2 = s % 10;
 }
 
+static void moves2config(struct config_moves *cm, moves_t moves)
+{
+	cm->moves1 = moves / 10;
+	cm->moves2 = moves % 10;
+}
+
 static void edit_bonus_control_on_entry(config_completed_cb_t cb)
 {
     const struct game_controller *game = bonus_control_game_controller_get();
@@ -60,7 +66,8 @@ static void edit_bonus_control_on_entry(config_completed_cb_t cb)
     ms2config(&p1_time, game->time_get(PLAYER1));
     ms2config(&p2_time, game->time_get(PLAYER2));
 
-	//TODO: get moves played
+	moves2config(&p1_moves, game->moves_get(PLAYER1));
+	moves2config(&p2_moves, game->moves_get(PLAYER2));
 
 	state = EDIT_P1_HOURS;
 
