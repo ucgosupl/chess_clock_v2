@@ -1,0 +1,63 @@
+#include "state_edit.h"
+
+#include "mode/mode.h"
+
+static enum state state;
+
+static const struct config_controller *edit;
+
+static void completed_cb(void)
+{
+	state = GAME;
+}
+
+void edit_on_entry(void)
+{
+	state = EDIT;
+
+	edit = mode_edit_controller_get();
+
+	edit->on_entry(completed_cb);
+}
+
+enum state edit_on_tick(events_t events)
+{
+	if (state != EDIT)
+	{
+		return state;
+	}
+	
+	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
+	{
+		edit->on_plus();
+	}
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_MINUS))
+	{
+		edit->on_minus();
+	}
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_LEFT))
+	{
+		edit->on_left();
+	}
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_RIGHT))
+	{
+		edit->on_right();
+	}
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
+	{
+
+	}
+	else
+	{
+
+	}
+
+	edit->display();
+
+	return state;
+}
+
+void edit_on_exit(void)
+{
+	edit->on_exit();
+}

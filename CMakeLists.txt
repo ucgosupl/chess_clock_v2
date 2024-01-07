@@ -82,6 +82,7 @@ set(C_SRCS
     periodic_tasks/periodic_tasks.c
 
     state_machine/state_config/state_config.c
+    state_machine/state_edit/state_edit.c
     state_machine/state_game/state_game.c
     state_machine/state_mode/state_mode.c
     state_machine/state_machine.c

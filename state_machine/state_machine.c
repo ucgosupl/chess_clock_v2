@@ -1,8 +1,10 @@
-#include <state_machine/state_game/state_game.h>
 #include "state_machine.h"
 
 #include "state_mode/state_mode.h"
 #include "state_config/state_config.h"
+#include "state_game/state_game.h"
+#include "state_edit/state_edit.h"
+
 #include "periodic_tasks/periodic_tasks.h"
 #include "buttons/buttons.h"
 
@@ -66,6 +68,20 @@ static void state_machine_tick(events_t events)
 		if (GAME != new_state)
 		{
 			game_on_exit();
+		}
+		break;
+	
+	case EDIT:
+		if (EDIT != last_state)
+		{
+			edit_on_entry();
+		}
+
+		new_state = edit_on_tick(events);
+
+		if (EDIT != new_state)
+		{
+			edit_on_exit();
 		}
 		break;
 

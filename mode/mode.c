@@ -31,7 +31,7 @@ typedef const struct config_controller * (*config_controller_get_t)(void);
 typedef const struct mode_builder * (*mode_builder_get_t)(void);
 typedef const struct game_controller * (*mode_game_controller_get_t)(void);
 typedef const struct edit_builder * (*edit_builder_get_t)(void);
-typedef const struct config_controller (*edit_controller_t)(void);
+typedef const struct config_controller * (*edit_controller_t)(void);
 
 struct mode_interface
 {
@@ -88,9 +88,14 @@ const struct game_controller * mode_game_controller_get(void)
 	return mode_interface_mapper[mode].game_controller_get();
 }
 
-const struct edit_builder * edit_builder_get(void)
+const struct edit_builder * mode_edit_builder_get(void)
 {
+	return mode_interface_mapper[mode].edit_builder_get();
+}
 
+const struct config_controller * mode_edit_controller_get(void)
+{
+	return mode_interface_mapper[mode].edit_controller_get();
 }
 
 static void empty_on_entry(config_completed_cb_t cb)
