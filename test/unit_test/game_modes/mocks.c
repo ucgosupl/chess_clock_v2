@@ -26,3 +26,8 @@ const struct config_controller * fixed_edit_controller_get(void)
 {
     return NULL;
 }
+
+const struct config_controller * bonus_edit_controller_get(void)
+{
+    return NULL;
+}

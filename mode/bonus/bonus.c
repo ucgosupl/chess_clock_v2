@@ -140,3 +140,40 @@ const struct mode_builder * bonus_mode_builder_get(void)
 {
 	return &bonus_builder;
 }
+
+static void bonus_edit_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void bonus_edit_moves(enum player p, moves_t m)
+{
+	(void) p;
+	(void) m;
+}
+
+static const struct edit_builder bonus_edit_builder =
+{
+	bonus_edit_time,
+	bonus_edit_moves,
+};
+
+const struct edit_builder * bonus_edit_builder_get(void)
+{
+	return &bonus_edit_builder;
+}

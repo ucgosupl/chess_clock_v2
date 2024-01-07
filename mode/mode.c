@@ -45,7 +45,7 @@ struct mode_interface
 static const struct mode_interface mode_interface_mapper[MODES_MAX] =
 { 
 	/* FIXED_CUSTOM,	*/	{fixed_config_controller_get, fixed_mode_builder_get, fixed_game_controller_get, fixed_edit_builder_get, fixed_edit_controller_get},
-	/* BONUS_CUSTOM,	*/	{bonus_config_controller_get, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
+	/* BONUS_CUSTOM,	*/	{bonus_config_controller_get, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
 	/* BONUSC_CUSTOM,	*/	{bonus_control_config_controller_get, bonus_control_mode_builder_get, bonus_control_game_controller_get, NULL, NULL},
 	/* FIXEDC_CUSTOM,	*/	{fixed_control_config_controller_get, fixed_control_mode_builder_get, fixed_control_game_controller_get, NULL, NULL},
 
@@ -56,12 +56,12 @@ static const struct mode_interface mode_interface_mapper[MODES_MAX] =
 	/* FIXED_1H,		*/	{set_mode_fixed_1h, fixed_mode_builder_get, fixed_game_controller_get, fixed_edit_builder_get, fixed_edit_controller_get},
 	/* FIXED_1H_30M,	*/	{set_mode_fixed_1h30min, fixed_mode_builder_get, fixed_game_controller_get, fixed_edit_builder_get, fixed_edit_controller_get},
 
-	/* BONUS_1M_1S,		*/	{set_mode_bonus_1m_inc_1s, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
-	/* BONUS_3M_2S,		*/	{set_mode_bonus_3m_inc_2s, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
-	/* BONUS_5M_3S,		*/	{set_mode_bonus_5m_inc_3s, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
-	/* BONUS_10M_5S,	*/	{set_mode_bonus_10m_inc_5s, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
-	/* BONUS_15M_10S,	*/	{set_mode_bonus_15m_inc_10s, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
-	/* BONUS_1H30M_30S,	*/	{set_mode_bonus_1h30m_inc_30s, bonus_mode_builder_get, bonus_game_controller_get, NULL, NULL},
+	/* BONUS_1M_1S,		*/	{set_mode_bonus_1m_inc_1s, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
+	/* BONUS_3M_2S,		*/	{set_mode_bonus_3m_inc_2s, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
+	/* BONUS_5M_3S,		*/	{set_mode_bonus_5m_inc_3s, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
+	/* BONUS_10M_5S,	*/	{set_mode_bonus_10m_inc_5s, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
+	/* BONUS_15M_10S,	*/	{set_mode_bonus_15m_inc_10s, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
+	/* BONUS_1H30M_30S,	*/	{set_mode_bonus_1h30m_inc_30s, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
 
 	/* BONUSC_1H30M_30S_40MOV_30M, */	{set_mode_bonus_control_1h30M_inc_30s_40mov_bonus_30min, bonus_control_mode_builder_get, bonus_control_game_controller_get, NULL, NULL},
 

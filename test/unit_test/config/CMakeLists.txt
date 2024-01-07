@@ -27,6 +27,7 @@ set(SRCS
 
 	${SRC_PATH}/mode/bonus/bonus.c
 	${SRC_PATH}/mode/bonus/config_bonus.c
+	${SRC_PATH}/mode/bonus/edit_bonus.c
 
 	${SRC_PATH}/mode/bonus_control/bonus_control.c
 	${SRC_PATH}/mode/bonus_control/config_bonus_control.c
