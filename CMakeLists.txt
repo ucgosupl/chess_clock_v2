@@ -73,6 +73,7 @@ set(C_SRCS
 
     mode/fixed_control/fixed_control.c
     mode/fixed_control/config_fixed_control.c
+    mode/fixed_control/edit_fixed_control.c
 
     mode/bonus/bonus.c
     mode/bonus/config_bonus.c

@@ -47,7 +47,7 @@ static const struct mode_interface mode_interface_mapper[MODES_MAX] =
 	/* FIXED_CUSTOM,	*/	{fixed_config_controller_get, fixed_mode_builder_get, fixed_game_controller_get, fixed_edit_builder_get, fixed_edit_controller_get},
 	/* BONUS_CUSTOM,	*/	{bonus_config_controller_get, bonus_mode_builder_get, bonus_game_controller_get, bonus_edit_builder_get, bonus_edit_controller_get},
 	/* BONUSC_CUSTOM,	*/	{bonus_control_config_controller_get, bonus_control_mode_builder_get, bonus_control_game_controller_get, bonus_control_edit_builder_get, bonus_control_edit_controller_get},
-	/* FIXEDC_CUSTOM,	*/	{fixed_control_config_controller_get, fixed_control_mode_builder_get, fixed_control_game_controller_get, NULL, NULL},
+	/* FIXEDC_CUSTOM,	*/	{fixed_control_config_controller_get, fixed_control_mode_builder_get, fixed_control_game_controller_get, fixed_control_edit_builder_get, fixed_control_edit_controller_get},
 
 	/* FIXED_1M,		*/	{set_mode_fixed_1m, fixed_mode_builder_get, fixed_game_controller_get, fixed_edit_builder_get, fixed_edit_controller_get},
 	/* FIXED_5M,		*/	{set_mode_fixed_5m, fixed_mode_builder_get, fixed_game_controller_get, fixed_edit_builder_get, fixed_edit_controller_get},
@@ -65,7 +65,7 @@ static const struct mode_interface mode_interface_mapper[MODES_MAX] =
 
 	/* BONUSC_1H30M_30S_40MOV_30M, */	{set_mode_bonus_control_1h30M_inc_30s_40mov_bonus_30min, bonus_control_mode_builder_get, bonus_control_game_controller_get, bonus_control_edit_builder_get, bonus_control_edit_controller_get},
 
-	/* FIXEDC_1H30M_30MOV_1H, */		{set_mode_fixed_control_1h30M_30mov_bonus_1h, fixed_control_mode_builder_get, fixed_control_game_controller_get, NULL, NULL},
+	/* FIXEDC_1H30M_30MOV_1H, */		{set_mode_fixed_control_1h30M_30mov_bonus_1h, fixed_control_mode_builder_get, fixed_control_game_controller_get, fixed_control_edit_builder_get, fixed_control_edit_controller_get},
 };
 
 void mode_set(enum mode m)

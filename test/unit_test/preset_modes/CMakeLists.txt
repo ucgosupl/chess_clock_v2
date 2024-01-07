@@ -24,6 +24,7 @@ set(SRCS
 
 	${SRC_PATH}/mode/fixed_control/fixed_control.c
 	${SRC_PATH}/mode/fixed_control/config_fixed_control.c
+	${SRC_PATH}/mode/fixed_control/edit_fixed_control.c
 
 	${SRC_PATH}/mode/bonus/bonus.c
 	${SRC_PATH}/mode/bonus/config_bonus.c

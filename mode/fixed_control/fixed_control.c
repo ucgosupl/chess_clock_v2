@@ -179,3 +179,54 @@ const struct mode_builder * fixed_control_mode_builder_get(void)
 {
 	return &fixed_control_builder;
 }
+
+static void fixed_control_edit_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void fixed_control_edit_moves(enum player p, moves_t m)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.moves_p1 = m;
+			break;
+		case PLAYER2:
+			data.moves_p2 = m;
+			break;
+		case PLAYER_BOTH:
+			data.moves_p1 = m;
+			data.moves_p2 = m;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static const struct edit_builder fixed_control_edit_builder =
+{
+	fixed_control_edit_time,
+	fixed_control_edit_moves,
+};
+
+const struct edit_builder * fixed_control_edit_builder_get(void)
+{
+	return &fixed_control_edit_builder;
+}
