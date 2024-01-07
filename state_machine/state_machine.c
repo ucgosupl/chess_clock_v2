@@ -12,6 +12,16 @@ static enum state last_state;
 static enum state new_state;
 static enum state state = MODE;
 
+typedef const struct state_interface * (*state_get_t)(void);
+
+static const state_get_t states[STATE_MAX] = 
+{
+	state_mode_get,
+	state_config_get,
+	state_game_get,
+	state_edit_get,
+};
+
 static void state_machine_tick(events_t events);
 
 void state_machine_init(void)
@@ -21,7 +31,11 @@ void state_machine_init(void)
 	buttons_init();
 
 	periodic_subscribe_100ms(state_machine_update);
-	periodic_subscribe_1ms(game_time_update);
+
+	for (enum state i = 0; i < STATE_MAX; i++)
+	{
+		states[i]()->init();
+	}
 }
 
 void state_machine_update(void)
@@ -32,61 +46,16 @@ void state_machine_update(void)
 
 static void state_machine_tick(events_t events)
  {
-	switch (state)
+	if (state != last_state)
 	{
-	case MODE:
-		new_state = mode_on_tick(events);
+		states[state]()->on_entry();
+	}
 
-		if (MODE != new_state)
-		{
-			mode_on_exit();
-		}
-		break;
+	new_state = states[state]()->on_tick(events);
 
-	case CONFIG:
-		if (CONFIG != last_state)
-		{
-			config_on_entry();
-		}
-
-		new_state = config_on_tick(events);
-
-		if (CONFIG != new_state)
-		{
-			config_on_exit();
-		}
-		break;
-
-	case GAME:
-		if (GAME != last_state)
-		{
-			game_on_entry();
-		}
-
-		new_state = game_on_tick(events);
-
-		if (GAME != new_state)
-		{
-			game_on_exit();
-		}
-		break;
-	
-	case EDIT:
-		if (EDIT != last_state)
-		{
-			edit_on_entry();
-		}
-
-		new_state = edit_on_tick(events);
-
-		if (EDIT != new_state)
-		{
-			edit_on_exit();
-		}
-		break;
-
-	default:
-		break;
+	if (state != new_state)
+	{
+		states[state]()->on_exit();
 	}
 
 	last_state = state;

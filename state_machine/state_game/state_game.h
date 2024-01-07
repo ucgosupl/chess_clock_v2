@@ -6,9 +6,6 @@
 #include "events/events.h"
 #include "../state.h"
 
-void game_on_entry(void);
-enum state game_on_tick(events_t events);
-void game_on_exit(void);
-void game_time_update(void);
+const struct state_interface * state_game_get(void);
 
 #endif /* STATE_GAME_H_ */

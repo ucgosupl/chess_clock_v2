@@ -6,6 +6,7 @@
 #include "buttons/buttons.h"
 #include "mode/mode.h"
 #include "turn/turn.h"
+#include "periodic_tasks/periodic_tasks.h"
 
 enum game_state {PAUSED, STARTED};
 
@@ -15,8 +16,7 @@ static enum game_state game_state = PAUSED;
 static const struct game_controller *game_mode = NULL;
 
 static void game_on_move(enum player who_moved);
-static ms_t game_p1_time_get(void);
-static ms_t game_p2_time_get(void);
+static void game_time_update(void);
 
 static void game_on_move(enum player who_moved)
 {
@@ -26,7 +26,12 @@ static void game_on_move(enum player who_moved)
 	}
 }
 
-void game_on_entry(void)
+static void game_init(void)
+{
+	periodic_subscribe_1ms(game_time_update);
+}
+
+static void game_on_entry(void)
 {
 	state = GAME;
 
@@ -36,7 +41,7 @@ void game_on_entry(void)
 	turn_subscribe(game_on_move);
 }
 
-enum state game_on_tick(events_t events)
+static enum state game_on_tick(events_t events)
 {
 	if (game_state == PAUSED && EVENT_IS_ACTIVE(events, EVENT_BUTTON_EDIT))
 	{
@@ -55,17 +60,17 @@ enum state game_on_tick(events_t events)
 		}
 	}
 
-	display_show_time(game_p1_time_get(), game_p2_time_get());
+	display_show_time(game_mode->time_get(PLAYER1),game_mode->time_get(PLAYER2));
 
 	return state;
 }
 
-void game_on_exit(void)
+static void game_on_exit(void)
 {
 
 }
 
-void game_time_update(void)
+static void game_time_update(void)
 {
 	if ((game_state == STARTED) && (game_mode != NULL))
 	{
@@ -73,12 +78,15 @@ void game_time_update(void)
 	}
 }
 
-static ms_t game_p1_time_get(void)
+static const struct state_interface state_game = 
 {
-	return game_mode->time_get(PLAYER1);
-}
+	game_init,
+	game_on_entry,
+	game_on_tick,
+	game_on_exit,
+};
 
-static ms_t game_p2_time_get(void)
+const struct state_interface * state_game_get(void)
 {
-	return game_mode->time_get(PLAYER2);
+	return &state_game;
 }
