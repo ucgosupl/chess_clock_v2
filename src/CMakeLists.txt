@@ -1,33 +1,16 @@
 set(CMAKE_TOOLCHAIN_FILE ../cmake/toolchain-arm-gcc.cmake)
 include(../cmake/compiler_flags.cmake)
 
+add_subdirectory(Drivers)
+
 set(INCLUDE_DIRS
 
     Core/Inc
-    Drivers/STM32F4xx_HAL_Driver/Inc
-    Drivers/STM32F4xx_HAL_Driver/Legacy
-    Drivers/CMSIS/Device/ST/STM32F4xx/Include
-    Drivers/CMSIS/Include
-    
+   
     .
 )
 
 set(C_SRCS
-    #HAL Library
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
-    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
-
     #Cube Generated
     Core/Src/stm32f4xx_hal_msp.c
     Core/Src/stm32f4xx_it.c
@@ -97,4 +80,4 @@ add_definitions(${GLOBAL_DEFINES})
 
 # generate elf file
 add_arm_executable(${CMAKE_PROJECT_NAME} ${C_SRCS} ${ASM_SRCS})
-arm_link_libraries(${CMAKE_PROJECT_NAME} ${LINKED_LIBS})
+arm_link_libraries(${CMAKE_PROJECT_NAME} ${LINKED_LIBS} PUBLIC STM32_HAL)
