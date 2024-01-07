@@ -43,7 +43,7 @@ enum state game_on_tick(events_t events)
 		else
 		{
 			game_state = STARTED;
-			//game_mode->on_start();
+			game_mode->on_start();
 		}
 	}
 

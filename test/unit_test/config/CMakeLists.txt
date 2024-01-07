@@ -20,6 +20,7 @@ set(SRCS
 
 	${SRC_PATH}/mode/fixed/fixed.c
 	${SRC_PATH}/mode/fixed/config_fixed.c
+	${SRC_PATH}/mode/fixed/edit_fixed.c
 
 	${SRC_PATH}/mode/fixed_control/fixed_control.c
 	${SRC_PATH}/mode/fixed_control/config_fixed_control.c

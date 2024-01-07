@@ -40,5 +40,6 @@ void mode_set(enum mode m);
 const struct config_controller * mode_config_controller_get(void);
 const struct mode_builder * mode_builder_get(void);
 const struct game_controller * mode_game_controller_get(void);
+const struct edit_builder * edit_builder_get(void);
 
 #endif /* MODE_H_ */

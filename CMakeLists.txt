@@ -66,6 +66,7 @@ set(C_SRCS
 
     mode/fixed/fixed.c
     mode/fixed/config_fixed.c
+    mode/fixed/edit_fixed.c
 
     mode/fixed_control/fixed_control.c
     mode/fixed_control/config_fixed_control.c

@@ -22,4 +22,10 @@ struct mode_builder
     set_moves_t set_moves;
 };
 
+struct edit_builder
+{
+    set_time_t edit_time;
+    set_moves_t edit_moves;
+};
+
 #endif /* MODE_BUILDER_H */
