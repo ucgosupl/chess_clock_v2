@@ -144,6 +144,75 @@ void display_show_config_bonus(struct config_time *bonus, enum config_state stat
 	config_time_to_str(bonus, lcd_buf + 7);
 }
 
+void display_show_edit_time(struct config_time *p1, struct config_time *p2, enum edit_state state)
+{
+	static uint32_t cnt = 0;
+
+	memcpy(lcd_buf, "                ", 16);
+
+	config_time_to_str(p1, lcd_buf);
+	config_time_to_str(p2, lcd_buf + 9);
+
+	cnt++;
+	if (cnt < 4)
+	{
+		switch(state)
+		{
+		case 0:
+			lcd_buf[0] = ' ';
+			break;
+		case 1:
+			lcd_buf[2] = ' ';
+			break;
+		case 2:
+			lcd_buf[3] = ' ';
+ 			break;
+		case 3:
+			lcd_buf[5] = ' ';
+			break;
+		case 4:
+			lcd_buf[6] = ' ';
+			break;
+
+		case 5:
+			lcd_buf[0 + 9] = ' ';
+			break;
+		case 6:
+			lcd_buf[2 + 9] = ' ';
+			break;
+		case 7:
+			lcd_buf[3 + 9] = ' ';
+			break;
+		case 8:
+			lcd_buf[5 + 9] = ' ';
+			break;
+		case 9:
+			lcd_buf[6 + 9] = ' ';
+			break;
+
+		}
+
+	}
+	else
+	{
+		if (cnt >= 6)
+		{
+			cnt = 0;
+		}
+	}
+}
+
+void display_show_edit_moves(struct config_moves *p1, struct config_moves *p2, enum edit_state state)
+{
+	memcpy(lcd_buf, "MOVES:  xx    xx", 16);
+
+	lcd_buf[8] = '0' + p1->moves1;
+	lcd_buf[9] = '0' + p1->moves2;
+
+	lcd_buf[14] = '0' + p2->moves1;
+	lcd_buf[15] = '0' + p2->moves2;
+}
+
 void display_update(void)
 {
 	LCD_SendCommand(0x80); // Set cursor to the beginning of the first line

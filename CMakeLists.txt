@@ -77,6 +77,7 @@ set(C_SRCS
 
     mode/bonus_control/bonus_control.c
     mode/bonus_control/config_bonus_control.c
+    mode/bonus_control/edit_bonus_control.c
 
     mode/mode.c
 

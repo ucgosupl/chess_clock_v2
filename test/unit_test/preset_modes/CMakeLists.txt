@@ -31,6 +31,7 @@ set(SRCS
 
 	${SRC_PATH}/mode/bonus_control/bonus_control.c
 	${SRC_PATH}/mode/bonus_control/config_bonus_control.c
+	${SRC_PATH}/mode/bonus_control/edit_bonus_control.c
 )
 
 set(TEST_NAME preset_modes)
