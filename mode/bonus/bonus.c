@@ -54,6 +54,8 @@ static ms_t bonus_time_get(enum player player)
 
 static moves_t bonus_moves_get(enum player player)
 {
+	(void) player;
+	
 	return 0;
 }
 

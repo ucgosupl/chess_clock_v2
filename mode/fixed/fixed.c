@@ -43,6 +43,8 @@ static ms_t fixed_time_get(enum player player)
 
 static moves_t fixed_moves_get(enum player player)
 {
+	(void) player;
+	
 	return 0;
 }
 
