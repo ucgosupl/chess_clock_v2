@@ -4,7 +4,7 @@ set(CMAKE_RANLIB ranlib)
 
 set(CMAKE_C_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-set(SRC_PATH ../../../)
+set(SRC_PATH ../../../src)
 
 set(INCLUDE_DIRS
 	${SRC_PATH}
