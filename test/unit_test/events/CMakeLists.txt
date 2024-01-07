@@ -16,33 +16,15 @@ set(TEST_INCLUDE_DIRS
 )
 
 set(SRCS
-	${SRC_PATH}/mode/mode.c
-
-	${SRC_PATH}/mode/fixed/fixed.c
-	${SRC_PATH}/mode/fixed/config_fixed.c
-	${SRC_PATH}/mode/fixed/edit_fixed.c
-
-	${SRC_PATH}/mode/fixed_control/fixed_control.c
-	${SRC_PATH}/mode/fixed_control/config_fixed_control.c
-	${SRC_PATH}/mode/fixed_control/edit_fixed_control.c
-
-	${SRC_PATH}/mode/bonus/bonus.c
-	${SRC_PATH}/mode/bonus/config_bonus.c
-	${SRC_PATH}/mode/bonus/edit_bonus.c
-
-	${SRC_PATH}/mode/bonus_control/bonus_control.c
-	${SRC_PATH}/mode/bonus_control/config_bonus_control.c
-	${SRC_PATH}/mode/bonus_control/edit_bonus_control.c
+	${SRC_PATH}/events/events.c
 )
 
-set(TEST_NAME preset_modes)
+set(TEST_NAME events)
 
 set(TEST_SRCS
 	${TEST_NAME}_test_main.c
 	${TEST_NAME}_test_runner.c
-	${TEST_NAME}_fixed_test.c
-
-	mocks.c
+	${TEST_NAME}_test.c
 )
 
 set(GLOBAL_DEFINES

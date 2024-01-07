@@ -41,12 +41,18 @@ static ms_t fixed_time_get(enum player player)
 	}
 }
 
+static moves_t fixed_moves_get(enum player player)
+{
+	return 0;
+}
+
 static const struct game_controller fixed_mode =
 {
 		fixed_on_start,
 		fixed_on_time_update,
 		fixed_on_move,
 		fixed_time_get,
+		fixed_moves_get,
 };
 
 const struct game_controller * fixed_game_controller_get(void)
@@ -109,4 +115,41 @@ static const struct mode_builder fixed_builder =
 const struct mode_builder * fixed_mode_builder_get(void)
 {
 	return &fixed_builder;
+}
+
+static void fixed_edit_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void fixed_edit_moves(enum player p, moves_t m)
+{
+	(void) p;
+	(void) m;
+}
+
+static const struct edit_builder fixed_edit_builder =
+{
+	fixed_edit_time,
+	fixed_edit_moves,
+};
+
+const struct edit_builder * fixed_edit_builder_get(void)
+{
+	return &fixed_edit_builder;
 }

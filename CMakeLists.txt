@@ -13,9 +13,12 @@ include(CTest)
 add_subdirectory(test/unit_test/unity unity)
 add_subdirectory(test/unit_test/fff fff)
 
+add_subdirectory(test/unit_test/events)
 add_subdirectory(test/unit_test/game_modes)
 add_subdirectory(test/unit_test/config)
 add_subdirectory(test/unit_test/preset_modes)
+add_subdirectory(test/unit_test/edit)
+
 
 include(cmake/compiler_flags.cmake)
 
@@ -66,21 +69,26 @@ set(C_SRCS
 
     mode/fixed/fixed.c
     mode/fixed/config_fixed.c
+    mode/fixed/edit_fixed.c
 
     mode/fixed_control/fixed_control.c
     mode/fixed_control/config_fixed_control.c
+    mode/fixed_control/edit_fixed_control.c
 
     mode/bonus/bonus.c
     mode/bonus/config_bonus.c
+    mode/bonus/edit_bonus.c
 
     mode/bonus_control/bonus_control.c
     mode/bonus_control/config_bonus_control.c
+    mode/bonus_control/edit_bonus_control.c
 
     mode/mode.c
 
     periodic_tasks/periodic_tasks.c
 
     state_machine/state_config/state_config.c
+    state_machine/state_edit/state_edit.c
     state_machine/state_game/state_game.c
     state_machine/state_mode/state_mode.c
     state_machine/state_machine.c

@@ -52,12 +52,18 @@ static ms_t bonus_time_get(enum player player)
 	}
 }
 
+static moves_t bonus_moves_get(enum player player)
+{
+	return 0;
+}
+
 static const struct game_controller bonus_mode =
 {
 		bonus_on_start,
 		bonus_on_time_update,
 		bonus_on_move,
 		bonus_time_get,
+		bonus_moves_get,
 };
 
 const struct game_controller * bonus_game_controller_get(void)
@@ -139,4 +145,41 @@ static const struct mode_builder bonus_builder =
 const struct mode_builder * bonus_mode_builder_get(void)
 {
 	return &bonus_builder;
+}
+
+static void bonus_edit_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void bonus_edit_moves(enum player p, moves_t m)
+{
+	(void) p;
+	(void) m;
+}
+
+static const struct edit_builder bonus_edit_builder =
+{
+	bonus_edit_time,
+	bonus_edit_moves,
+};
+
+const struct edit_builder * bonus_edit_builder_get(void)
+{
+	return &bonus_edit_builder;
 }

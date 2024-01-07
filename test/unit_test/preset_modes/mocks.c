@@ -25,3 +25,18 @@ void display_show_config_bonus(struct config_time *bonus, enum config_state stat
     (void) bonus;
     (void) state;
 }
+
+
+void display_show_edit_time(struct config_time *p1, struct config_time *p2, enum edit_state state)
+{
+    (void) p1;
+    (void) p2;
+    (void) state;
+}
+
+void display_show_edit_moves(struct config_moves *p1, struct config_moves *p2, enum edit_state state)
+{
+    (void) p1;
+    (void) p2;
+    (void) state;
+}

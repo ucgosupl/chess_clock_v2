@@ -63,12 +63,30 @@ static ms_t fixed_control_time_get(enum player player)
 	}
 }
 
+static moves_t fixed_control_moves_get(enum player player)
+{
+	switch(player)
+	{
+		case PLAYER1:
+			return data.moves_p1;
+
+		case PLAYER2:
+			return data.moves_p2;
+
+		default:
+			break;
+	}
+
+	return 0;
+}
+
 static const struct game_controller fixed_control_mode =
 {
 		fixed_control_on_start,
 		fixed_control_on_time_update,
 		fixed_control_on_move,
 		fixed_control_time_get,
+		fixed_control_moves_get,
 };
 
 const struct game_controller * fixed_control_game_controller_get(void)
@@ -160,4 +178,55 @@ static const struct mode_builder fixed_control_builder =
 const struct mode_builder * fixed_control_mode_builder_get(void)
 {
 	return &fixed_control_builder;
+}
+
+static void fixed_control_edit_time(enum player p, ms_t t)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.time_p1 = t;
+			break;
+		case PLAYER2:
+			data.time_p2 = t;
+			break;
+		case PLAYER_BOTH:
+			data.time_p1 = t;
+			data.time_p2 = t;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static void fixed_control_edit_moves(enum player p, moves_t m)
+{
+	switch(p)
+	{
+		case PLAYER1:
+			data.moves_p1 = m;
+			break;
+		case PLAYER2:
+			data.moves_p2 = m;
+			break;
+		case PLAYER_BOTH:
+			data.moves_p1 = m;
+			data.moves_p2 = m;
+			break;
+
+		default:
+			break;
+	}
+}
+
+static const struct edit_builder fixed_control_edit_builder =
+{
+	fixed_control_edit_time,
+	fixed_control_edit_moves,
+};
+
+const struct edit_builder * fixed_control_edit_builder_get(void)
+{
+	return &fixed_control_edit_builder;
 }

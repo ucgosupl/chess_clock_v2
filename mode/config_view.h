@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIG_VIEW_H
+#define CONFIG_VIEW_H
 
 #include <stdint.h>
 #include "time.h"
@@ -40,6 +40,31 @@ enum config_state
 	CONFIG_STATE_MAX,
 };
 
+enum edit_state
+{
+	EDIT_P1_HOURS,
+	EDIT_P1_MIN1,
+	EDIT_P1_MIN2,
+	EDIT_P1_SEC1,
+	EDIT_P1_SEC2,
+
+	EDIT_P2_HOURS,
+	EDIT_P2_MIN1,
+	EDIT_P2_MIN2,
+	EDIT_P2_SEC1,
+	EDIT_P2_SEC2,
+
+	EDIT_P1_MOVES1,
+	EDIT_P1_MOVES2,
+
+	EDIT_P2_MOVES1,
+	EDIT_P2_MOVES2,
+
+	EDIT_DONE,
+
+	EDIT_STATE_MAX,
+};
+
 struct config_time
 {
 	uint8_t h;
@@ -64,4 +89,4 @@ typedef void (*show_config_inc_t)(struct config_time *p1, struct config_time *p2
 typedef void (*show_config_moves_t)(struct config_moves *moves, enum config_state state);
 typedef void (*show_config_bonus_t)(struct config_time *bonus, enum config_state state);
 
-#endif /* CONFIG_H */
+#endif /* CONFIG_VIEW_H */

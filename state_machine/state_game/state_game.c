@@ -7,9 +7,11 @@
 #include "mode/mode.h"
 #include "turn/turn.h"
 
-enum game_state {NOT_STARTED, STARTED, PAUSED};
+enum game_state {PAUSED, STARTED};
 
-static enum game_state game_state = NOT_STARTED;
+static enum state state;
+
+static enum game_state game_state = PAUSED;
 static const struct game_controller *game_mode = NULL;
 
 static void game_on_move(enum player who_moved);
@@ -26,15 +28,21 @@ static void game_on_move(enum player who_moved)
 
 void game_on_entry(void)
 {
+	state = GAME;
+
 	game_mode = mode_game_controller_get();
 
-	game_state = NOT_STARTED;
+	game_state = PAUSED;
 	turn_subscribe(game_on_move);
 }
 
 enum state game_on_tick(events_t events)
 {
-	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
+	if (game_state == PAUSED && EVENT_IS_ACTIVE(events, EVENT_BUTTON_EDIT))
+	{
+		state = EDIT;
+	}
+	else if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLAY))
 	{
 		if (game_state == STARTED)
 		{
@@ -43,13 +51,13 @@ enum state game_on_tick(events_t events)
 		else
 		{
 			game_state = STARTED;
-			//game_mode->on_start();
+			game_mode->on_start();
 		}
 	}
 
 	display_show_time(game_p1_time_get(), game_p2_time_get());
 
-	return GAME;
+	return state;
 }
 
 void game_on_exit(void)
