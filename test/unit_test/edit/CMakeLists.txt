@@ -43,6 +43,7 @@ set(TEST_SRCS
 	${TEST_NAME}_fixed_test.c
 	${TEST_NAME}_bonus_test.c
 	${TEST_NAME}_bonus_control_test.c
+	${TEST_NAME}_fixed_control_test.c
 
 	display_mocks.c
 )
