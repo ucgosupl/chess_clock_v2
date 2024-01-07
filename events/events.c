@@ -6,6 +6,12 @@ static events_t last_events = 0;
 static uint32_t play_pressed_cnt = 0;
 static const uint32_t PLAY_PRESSED_THRESHOLD = 3 * 10;
 
+void events_init(void)
+{
+	last_events = 0;
+	play_pressed_cnt = 0;
+}
+
 events_t events_update(void)
 {
 	events_t events = 0;
@@ -50,6 +56,8 @@ events_t events_update(void)
 
 		play_pressed_cnt = 0;
 	}
+
+	last_events = events;
 
 	return events;
 }
