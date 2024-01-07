@@ -7,12 +7,17 @@
 
 static enum mode mode;
 
-void mode_on_entry(void)
+static void mode_init(void)
 {
 
 }
 
-enum state mode_on_tick(events_t events)
+static void mode_on_entry(void)
+{
+
+}
+
+static enum state mode_on_tick(events_t events)
 {
 	if (EVENT_IS_ACTIVE(events, EVENT_BUTTON_PLUS))
 	{
@@ -42,7 +47,20 @@ enum state mode_on_tick(events_t events)
 	return MODE;
 }
 
-void mode_on_exit(void)
+static void mode_on_exit(void)
 {
 	mode_set(mode);
+}
+
+static const struct state_interface state_mode = 
+{
+	mode_init,
+	mode_on_entry,
+	mode_on_tick,
+	mode_on_exit,
+};
+
+const struct state_interface * state_mode_get(void)
+{
+	return &state_mode;
 }

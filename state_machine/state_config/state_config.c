@@ -11,7 +11,12 @@ static void completed_cb(void)
 	state = GAME;
 }
 
-void config_on_entry(void)
+static void config_init(void)
+{
+	
+}
+
+static void config_on_entry(void)
 {
 	state = CONFIG;
 
@@ -20,7 +25,7 @@ void config_on_entry(void)
 	config->on_entry(completed_cb);
 }
 
-enum state config_on_tick(events_t events)
+static enum state config_on_tick(events_t events)
 {
 	if (state != CONFIG)
 	{
@@ -57,7 +62,20 @@ enum state config_on_tick(events_t events)
 	return state;
 }
 
-void config_on_exit(void)
+static void config_on_exit(void)
 {
 	config->on_exit();
+}
+
+static const struct state_interface state_config = 
+{
+	config_init,
+	config_on_entry,
+	config_on_tick,
+	config_on_exit,
+};
+
+const struct state_interface * state_config_get(void)
+{
+	return &state_config;
 }

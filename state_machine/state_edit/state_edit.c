@@ -11,6 +11,11 @@ static void completed_cb(void)
 	state = GAME;
 }
 
+static void edit_init(void)
+{
+
+}
+
 void edit_on_entry(void)
 {
 	state = EDIT;
@@ -60,4 +65,17 @@ enum state edit_on_tick(events_t events)
 void edit_on_exit(void)
 {
 	edit->on_exit();
+}
+
+static const struct state_interface state_edit = 
+{
+	edit_init,
+	edit_on_entry,
+	edit_on_tick,
+	edit_on_exit,
+};
+
+const struct state_interface * state_edit_get(void)
+{
+	return &state_edit;
 }

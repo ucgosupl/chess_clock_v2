@@ -4,8 +4,6 @@
 #include "events/events.h"
 #include "../state.h"
 
-void mode_on_entry(void);
-enum state mode_on_tick(events_t events);
-void mode_on_exit(void);
+const struct state_interface * state_mode_get(void);
 
 #endif /* STATE_MODE_STATE_MODE_H_ */
